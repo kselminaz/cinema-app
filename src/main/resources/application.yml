@@ -1,0 +1,19 @@
+server:
+  port: 8086
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/cinema_app
+    username: postgres
+    password: postgres
+  liquibase:
+    change-log: liquibase/changelog-master.yml
+    enabled: true
+    drop-first: false
+  jpa:
+    properties:
+      hibernate:
+    open-in-view: false
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
