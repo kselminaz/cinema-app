@@ -31,7 +31,6 @@ public class Language {
     LocalDateTime createdAt;
     @UpdateTimestamp
     LocalDateTime updatedAt;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
