@@ -1,8 +1,7 @@
-package group.aist.cinemaapp.dto.response;
+package group.aist.cinemaapp.dto.request;
 
-import group.aist.cinemaapp.enums.LanguageStatus;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,14 +11,14 @@ import static lombok.AccessLevel.PRIVATE;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @FieldDefaults(level = PRIVATE)
-public class LanguageResponse{
+public class LanguageUpdateRequest {
 
-    Long id;
+    @NotBlank(message = "Iso Code is required")
     String isoCode;
+
+    @NotBlank(message = "Title is required")
     String title;
-    LanguageStatus status;
 
+    String status;
 }
-
