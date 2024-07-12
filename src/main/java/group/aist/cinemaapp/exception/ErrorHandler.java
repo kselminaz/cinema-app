@@ -17,22 +17,6 @@ import static org.springframework.http.HttpStatus.*;
 @Slf4j
 @RestControllerAdvice
 public class ErrorHandler {
-
-//    @ExceptionHandler(Exception.class)
-//    @ResponseStatus(INTERNAL_SERVER_ERROR)
-//    public ErrorResponse handle(Exception exception) {
-//        log.error("Exception:", exception);
-//        return new ErrorResponse(SERVER_ERROR.toString(), "Unexpected server error");
-//    }
-
-//    @ExceptionHandler(NotFoundException.class)
-//    @ResponseStatus(NOT_FOUND)
-//    public ErrorResponse handle(NotFoundException exception) {
-//        log.error("NotFoundException:", exception);
-//        return new ErrorResponse(DATA_NOT_FOUND.toString(), exception.getMessage());
-//    }
-
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(BAD_REQUEST)
     public List<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {

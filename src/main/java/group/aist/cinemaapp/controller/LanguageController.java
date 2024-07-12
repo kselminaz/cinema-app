@@ -48,12 +48,14 @@ public class LanguageController {
     @PutMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
     public void updateLanguage(@PathVariable Long id,@Valid @RequestBody LanguageUpdateRequest request) {
+
         languageService.updateLanguage(id, request);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
     public void updateLanguageWithStatus(@PathVariable Long id,@RequestParam String status) {
+
         languageService.updateLanguageWithStatus(id, status);
     }
 

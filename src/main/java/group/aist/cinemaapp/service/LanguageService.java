@@ -5,7 +5,6 @@ import group.aist.cinemaapp.dto.request.LanguageRequest;
 import group.aist.cinemaapp.dto.request.LanguageUpdateRequest;
 import group.aist.cinemaapp.dto.response.LanguageResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
-import group.aist.cinemaapp.enums.LanguageStatus;
 import group.aist.cinemaapp.model.Language;
 
 public interface LanguageService {

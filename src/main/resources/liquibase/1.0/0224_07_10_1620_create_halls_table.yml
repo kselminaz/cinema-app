@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: Create_languages_table
-      author: Selminaz Kerimli
+      id: Create_hall_table
+      author: Elvin Hashimov
       changes:
         - createTable:
-            tableName: languages
+            tableName: halls
             columns:
                   - column:
                       name: id
@@ -14,13 +14,13 @@ databaseChangeLog:
                         primaryKey: true
                         nullable: false
                   - column:
-                      name: iso_code
+                      name: name
                       type: varchar(255)
                       constraints:
                         nullable: false
                   - column:
-                      name: title
-                      type: varchar(255)
+                      name: total_seats_count
+                      type: int
                       constraints:
                         nullable: false
                   - column:
@@ -41,4 +41,4 @@ databaseChangeLog:
                         constraints:
                           nullable: false
 
-            remarks: Table to store languages
+            remarks: Table to store halls

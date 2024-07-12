@@ -17,18 +17,19 @@ import static lombok.AccessLevel.PRIVATE;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "languages")
+@Table(name = "hall")
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class Language {
+public class Hall {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     Long id;
-    String isoCode;
-    String title;
+    String name;
+    Integer totalSeatsCount;
     Integer status;
     @CreationTimestamp
     LocalDateTime createdAt;
+
     @UpdateTimestamp
     LocalDateTime updatedAt;
 
@@ -44,6 +45,5 @@ public class Language {
     public int hashCode() {
         return Objects.hash(getId());
     }
-
 
 }
