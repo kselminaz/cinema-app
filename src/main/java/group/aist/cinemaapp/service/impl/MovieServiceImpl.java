@@ -4,12 +4,13 @@ import group.aist.cinemaapp.criteria.PageCriteria;
 import group.aist.cinemaapp.dto.request.MovieRequest;
 import group.aist.cinemaapp.dto.response.MovieResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
-import group.aist.cinemaapp.enums.LanguageStatus;
 import group.aist.cinemaapp.enums.MovieStatus;
 import group.aist.cinemaapp.exception.NotFoundException;
 import group.aist.cinemaapp.mapper.MovieMapper;
+import group.aist.cinemaapp.model.Language;
 import group.aist.cinemaapp.model.Movie;
 import group.aist.cinemaapp.repository.MovieRepository;
+import group.aist.cinemaapp.service.LanguageService;
 import group.aist.cinemaapp.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static group.aist.cinemaapp.enums.LanguageStatus.VISIBLE;
 import static group.aist.cinemaapp.enums.MovieStatus.DELETED;
@@ -33,6 +35,7 @@ public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
+    private final LanguageService languageService;
 
     @Override
     public MovieResponse getMovieById(Long id) {
@@ -53,6 +56,11 @@ public class MovieServiceImpl implements MovieService {
     public void saveMovie(MovieRequest movieRequest) {
         Movie movie = movieMapper.toMovie(movieRequest);
         movie.setStatus(MovieStatus.VISIBLE.getId());
+        List<Long> subtitleLanguageIds = movieRequest.getSubtitleLanguages();
+        if(!subtitleLanguageIds.isEmpty()){
+            List<Language> subtitleLanguages=subtitleLanguageIds.stream().map(languageService::fetchLanguageIfExist).collect(Collectors.toList());
+            movie.setSubtitleLanguages(subtitleLanguages);
+        }
         movieRepository.save(movie);
     }
 
