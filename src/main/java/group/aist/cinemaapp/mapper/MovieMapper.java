@@ -6,7 +6,6 @@ import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.enums.MovieStatus;
 import group.aist.cinemaapp.model.Language;
 import group.aist.cinemaapp.model.Movie;
-import group.aist.cinemaapp.service.LanguageService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
