@@ -4,26 +4,26 @@ import group.aist.cinemaapp.criteria.PageCriteria;
 import group.aist.cinemaapp.dto.request.MovieRequest;
 import group.aist.cinemaapp.dto.response.MovieResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
-import group.aist.cinemaapp.enums.LanguageStatus;
 import group.aist.cinemaapp.enums.MovieStatus;
 import group.aist.cinemaapp.exception.NotFoundException;
 import group.aist.cinemaapp.mapper.MovieMapper;
+import group.aist.cinemaapp.model.Language;
 import group.aist.cinemaapp.model.Movie;
 import group.aist.cinemaapp.repository.MovieRepository;
+import group.aist.cinemaapp.service.LanguageService;
 import group.aist.cinemaapp.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static group.aist.cinemaapp.enums.LanguageStatus.VISIBLE;
 import static group.aist.cinemaapp.enums.MovieStatus.DELETED;
-import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 
@@ -33,6 +33,7 @@ public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
+    private final LanguageService languageService;
 
     @Override
     public MovieResponse getMovieById(Long id) {
@@ -45,7 +46,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public PageableResponse<MovieResponse> getMovies(PageCriteria pageCriteria) {
-        var resultsPage = movieRepository.findAllByStatusIs(PageRequest.of(pageCriteria.getPage(), pageCriteria.getCount(), Sort.by(ASC, "name")), VISIBLE.getId());
+        var resultsPage = movieRepository.findAllByStatusIs(PageRequest.of(pageCriteria.getPage(), pageCriteria.getCount()), VISIBLE.getId());
         return movieMapper.toPageableResponse(resultsPage);
     }
 
@@ -53,6 +54,8 @@ public class MovieServiceImpl implements MovieService {
     public void saveMovie(MovieRequest movieRequest) {
         Movie movie = movieMapper.toMovie(movieRequest);
         movie.setStatus(MovieStatus.VISIBLE.getId());
+        setSubtitleLanguageIfExist(movie, movieRequest);
+
         movieRepository.save(movie);
     }
 
@@ -66,6 +69,7 @@ public class MovieServiceImpl implements MovieService {
         movie.setReleaseTime(movieRequest.getReleaseTime());
         movie.setDuration(movieRequest.getDuration());
         movie.setAgeLimit(movieRequest.getAgeLimit());
+        setSubtitleLanguageIfExist(movie, movieRequest);
         movieRepository.save(movie);
     }
 
@@ -91,5 +95,13 @@ public class MovieServiceImpl implements MovieService {
         return movieRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format(
                 "Movie with id [%d] was not found!", id
         )));
+    }
+
+    public void setSubtitleLanguageIfExist(Movie movie, MovieRequest movieRequest){
+        List<Long> subtitleLanguageIds = movieRequest.getSubtitleLanguages();
+        if(!subtitleLanguageIds.isEmpty()){
+            List<Language> subtitleLanguages=subtitleLanguageIds.stream().map(languageService::fetchLanguageIfExist).collect(Collectors.toList());
+            movie.setSubtitleLanguages(subtitleLanguages);
+        }
     }
 }

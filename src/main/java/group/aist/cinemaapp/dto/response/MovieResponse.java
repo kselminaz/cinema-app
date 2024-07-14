@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -24,5 +25,6 @@ public class MovieResponse {
     LocalDateTime releaseTime;
     Integer duration;
     Integer ageLimit;
+    List<String> subtitleLanguages;
     String status;
 }
