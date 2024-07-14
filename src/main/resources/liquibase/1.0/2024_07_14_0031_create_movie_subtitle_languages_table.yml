@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create_movie_subtitle_languages_table
+      author: Alsu Ismayilzade
+      changes:
+        - createTable:
+            tableName: movie_subtitle_languages
+            columns:
+              - column:
+                  name: movie_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie_subtitle_languages_movie
+                    references: movies(id)
+              - column:
+                  name: language_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie_subtitle_languages_language
+                    references: languages(id)
+          remarks: Table to store movie subtitle languages
