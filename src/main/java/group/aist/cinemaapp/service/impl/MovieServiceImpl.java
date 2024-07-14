@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import static group.aist.cinemaapp.enums.LanguageStatus.VISIBLE;
 import static group.aist.cinemaapp.enums.MovieStatus.DELETED;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 
 @Service
@@ -38,7 +39,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public MovieResponse getMovieById(Long id) {
         Movie movie = getMovieIfExist(id);
-        if(movie.getStatus() != MovieStatus.VISIBLE.getId()){
+        if (movie.getStatus() != MovieStatus.VISIBLE.getId()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie with id [" + id + "] is not visible.");
         }
         return movieMapper.toMovieResponse(movie);
@@ -55,7 +56,6 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = movieMapper.toMovie(movieRequest);
         movie.setStatus(MovieStatus.VISIBLE.getId());
         setSubtitleLanguageIfExist(movie, movieRequest);
-
         movieRepository.save(movie);
     }
 
@@ -92,15 +92,15 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie getMovieIfExist(Long id) {
-        return movieRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format(
-                "Movie with id [%d] was not found!", id
+        return movieRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, String.format(
+                "Language with id [" + id + "] was not found!", id
         )));
     }
 
-    public void setSubtitleLanguageIfExist(Movie movie, MovieRequest movieRequest){
+    public void setSubtitleLanguageIfExist(Movie movie, MovieRequest movieRequest) {
         List<Long> subtitleLanguageIds = movieRequest.getSubtitleLanguages();
-        if(!subtitleLanguageIds.isEmpty()){
-            List<Language> subtitleLanguages=subtitleLanguageIds.stream().map(languageService::fetchLanguageIfExist).collect(Collectors.toList());
+        if (!subtitleLanguageIds.isEmpty()) {
+            List<Language> subtitleLanguages = subtitleLanguageIds.stream().map(languageService::fetchLanguageIfExist).collect(Collectors.toList());
             movie.setSubtitleLanguages(subtitleLanguages);
         }
     }
