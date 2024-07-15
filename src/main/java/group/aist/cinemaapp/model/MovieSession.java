@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.model;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
@@ -20,37 +22,51 @@ import static lombok.AccessLevel.PRIVATE;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "languages")
+@Table(name = "movie_sessions")
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class Language {
+public class MovieSession {
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     Long id;
-    String isoCode;
-    String title;
+
+    @ManyToOne(fetch = LAZY,cascade = ALL)
+    @JoinColumn(name = "movie_id")
+    @ToString.Exclude
+    Movie movie;
+
+    @ManyToOne(fetch = LAZY,cascade = ALL)
+    @JoinColumn(name = "hall_id")
+    @ToString.Exclude
+    Hall hall;
+
+    @ManyToOne(fetch = LAZY,cascade = ALL)
+    @JoinColumn(name = "subtitle_lang_id")
+    @ToString.Exclude
+    Language subtitleLanguage;
+
+    LocalDateTime datetime;
+
     Integer status;
+
     @CreationTimestamp
     LocalDateTime createdAt;
+
     @UpdateTimestamp
     LocalDateTime updatedAt;
-
-    @ManyToMany(mappedBy = "subtitleLanguages", fetch = LAZY, cascade = ALL)
-    @ToString.Exclude
-    List<Movie> movieWithSubtitleLanguages;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Language language = (Language) o;
-        return Objects.equals(getId(), language.getId());
+        MovieSession that = (MovieSession) o;
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getId());
     }
-
-
 }
+

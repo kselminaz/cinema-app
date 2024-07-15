@@ -1,0 +1,80 @@
+databaseChangeLog:
+  - changeSet:
+      id: Insert_data_to_movies_table
+      author: Selminaz Kerimli
+      changes:
+        - insert:
+            tableName: movies
+            columns:
+              - column:
+                  name: name
+                  value: Inception
+              - column:
+                  name: image
+                  value: https://example.com/inception.jpg
+              - column:
+                  name: description
+                  value: A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO
+              - column:
+                  name: release_time
+                  value: 2010-07-16 00:00:00
+              - column:
+                  name: duration
+                  value: 148
+              - column:
+                  name: age_limit
+                  value: 13
+              - column:
+                  name: status
+                  value: 1
+        - insert:
+            tableName: movie_languages
+            columns:
+              - column:
+                  name: movie_id
+                  value: 1
+              - column:
+                  name: language_id
+                  value: 1
+              - column:
+                  name: is_main
+                  value: false
+        - insert:
+            tableName: movie_languages
+            columns:
+              - column:
+                  name: movie_id
+                  value: 1
+              - column:
+                  name: language_id
+                  value: 2
+              - column:
+                  name: is_main
+                  value: true
+        - insert:
+            tableName: movie_subtitle_languages
+            columns:
+              - column:
+                  name: movie_id
+                  value: 1
+              - column:
+                  name: language_id
+                  value: 1
+        - insert:
+            tableName: movie_subtitle_languages
+            columns:
+              - column:
+                  name: movie_id
+                  value: 1
+              - column:
+                  name: language_id
+                  value: 2
+        - insert:
+            tableName: movie_subtitle_languages
+            columns:
+              - column:
+                  name: movie_id
+                  value: 1
+              - column:
+                  name: language_id
+                  value: 3

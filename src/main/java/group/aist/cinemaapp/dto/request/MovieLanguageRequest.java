@@ -1,6 +1,5 @@
 package group.aist.cinemaapp.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,12 +11,10 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = PRIVATE)
-public class LanguageRequest {
+public class MovieLanguageRequest {
 
-    @NotBlank(message = "Iso Code is required")
-    String isoCode;
+    Long languageId;
 
-    @NotBlank(message = "Title is required")
-    String title;
+    Boolean isMain;
 
 }
