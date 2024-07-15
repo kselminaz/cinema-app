@@ -5,7 +5,6 @@ import group.aist.cinemaapp.dto.request.MovieRequest;
 import group.aist.cinemaapp.dto.response.MovieResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.enums.MovieStatus;
-import group.aist.cinemaapp.exception.NotFoundException;
 import group.aist.cinemaapp.mapper.MovieMapper;
 import group.aist.cinemaapp.model.Language;
 import group.aist.cinemaapp.model.Movie;
@@ -14,7 +13,6 @@ import group.aist.cinemaapp.service.LanguageService;
 import group.aist.cinemaapp.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,6 +23,7 @@ import java.util.stream.Collectors;
 import static group.aist.cinemaapp.enums.LanguageStatus.VISIBLE;
 import static group.aist.cinemaapp.enums.MovieStatus.DELETED;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 
 @Service
@@ -39,7 +38,7 @@ public class MovieServiceImpl implements MovieService {
     public MovieResponse getMovieById(Long id) {
         Movie movie = getMovieIfExist(id);
         if (movie.getStatus() != MovieStatus.VISIBLE.getId()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie with id [" + id + "] is not visible.");
+            throw new ResponseStatusException(NOT_FOUND, "Movie with id [" + id + "] is not visible.");
         }
         return movieMapper.toMovieResponse(movie);
     }
@@ -91,9 +90,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie getMovieIfExist(Long id) {
-        return movieRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format(
-                "Movie with id [" + id + "] was not found!", id
-        )));
+        return movieRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Movie with id [" + id + "] is not visible."));
     }
 
     public void setSubtitleLanguageIfExist(Movie movie, MovieRequest movieRequest) {
