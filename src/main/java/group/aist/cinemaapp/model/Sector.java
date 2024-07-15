@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.model;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -7,10 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
-import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -19,15 +18,14 @@ import static lombok.AccessLevel.PRIVATE;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "halls")
+@Table(name = "sectors")
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class Hall {
+public class Sector {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     Long id;
     String name;
-    Integer totalSeatsCount;
     Integer status;
     @CreationTimestamp
     LocalDateTime createdAt;
@@ -35,8 +33,10 @@ public class Hall {
     @UpdateTimestamp
     LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "hall", fetch = FetchType.EAGER)
-    List<Sector> sector;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "hall_id")
+    @ToString.Exclude
+    Hall hall;
 
     @Override
     public boolean equals(Object o) {
@@ -52,3 +52,5 @@ public class Hall {
     }
 
 }
+
+

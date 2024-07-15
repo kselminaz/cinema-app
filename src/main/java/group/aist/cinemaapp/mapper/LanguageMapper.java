@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring",uses={LanguageStatus.class})
+@Mapper(componentModel = "spring", uses = {LanguageStatus.class})
 public interface LanguageMapper {
 
     Language toEntity(LanguageCreateRequest request );

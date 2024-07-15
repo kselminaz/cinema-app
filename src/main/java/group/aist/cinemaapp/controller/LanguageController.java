@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @RequiredArgsConstructor
 @RequestMapping("/v1/languages")
 public class LanguageController {
-    
+
     private final LanguageService languageService;
 
     @GetMapping("/{id}")
@@ -46,14 +46,14 @@ public class LanguageController {
 
     @PutMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
-    public void updateLanguage(@PathVariable Long id,@Valid @RequestBody LanguageUpdateRequest request) {
+    public void updateLanguage(@PathVariable Long id, @Valid @RequestBody LanguageUpdateRequest request) {
 
         languageService.updateLanguage(id, request);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
-    public void updateLanguageWithStatus(@PathVariable Long id,@RequestParam String status) {
+    public void updateLanguageWithStatus(@PathVariable Long id, @RequestParam String status) {
 
         languageService.updateLanguageWithStatus(id, status);
     }

@@ -1,11 +1,13 @@
 package group.aist.cinemaapp.dto.response;
 
-import group.aist.cinemaapp.enums.LanguageStatus;
+import group.aist.cinemaapp.enums.SectorStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -14,11 +16,10 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class LanguageResponse {
-
+public class SectorResponse {
     Long id;
-    String isoCode;
-    String title;
-    LanguageStatus status;
+    String name;
+    SectorStatus status;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 }
-
