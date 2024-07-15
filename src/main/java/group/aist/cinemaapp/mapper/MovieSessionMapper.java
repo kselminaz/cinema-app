@@ -24,7 +24,7 @@ import java.util.List;
 public interface MovieSessionMapper {
 
 
-    MovieSession toEntity(MovieSessionCreateRequest request );
+    /*MovieSession toEntity(MovieSessionCreateRequest request );
 
     @Mapping(target = "status", source = "status", qualifiedByName = "getById")
     MovieSessionResponse toResponse(MovieSession entity);
@@ -43,6 +43,6 @@ public interface MovieSessionMapper {
     @Named("getDataList")
     default List<MovieSessionResponse> getLanguageList(List<MovieSession> data) {
         return data.stream().map(this::toResponse).toList();
-    }
+    }*/
 
 }

@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.service.impl;
 
+import group.aist.cinemaapp.annotation.Log;
 import group.aist.cinemaapp.criteria.PageCriteria;
 import group.aist.cinemaapp.dto.request.LanguageCreateRequest;
 import group.aist.cinemaapp.dto.request.LanguageUpdateRequest;
@@ -26,6 +27,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
+@Log
 public class LanguageServiceImpl implements LanguageService {
     private final LanguageRepository languageRepository;
     private final LanguageMapper languageMapper;

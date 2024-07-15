@@ -4,7 +4,7 @@ databaseChangeLog:
       author: Selminaz Kerimli
       changes:
         - createTable:
-            tableName: movies
+            tableName: movie_sessions
             columns:
               - column:
                   name: id
@@ -28,19 +28,19 @@ databaseChangeLog:
                     foreignKeyName: fk_movie_sessions_hall
                     references: halls(id)
               - column:
-                  name: dubbing_lang_id
+                  name: language_id
                   type: bigint
                   constraints:
                     nullable: false
                     foreignKeyName: fk_movie_sessions_lang
                     references: movie_languages(id)
               - column:
-                  name: subtitle_lang_id
+                  name: subtitle_language_id
                   type: bigint
                   constraints:
                     nullable: false
                     foreignKeyName: fk_movie_sessions_subtitle_lang
-                    references: movie_subtitle_languages(id)
+                    references: languages(id)
               - column:
                   name: datetime
                   type: timestamp

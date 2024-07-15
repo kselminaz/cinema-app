@@ -3,15 +3,10 @@ package group.aist.cinemaapp.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 import static jakarta.persistence.CascadeType.ALL;
-import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -20,37 +15,41 @@ import static lombok.AccessLevel.PRIVATE;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "languages")
+@Table(name = "movie_languages")
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class Language {
+@NamedEntityGraph(
+        name = "movieLanguageWithRelations",
+        attributeNodes = {
+                @NamedAttributeNode("movie"),
+                @NamedAttributeNode("language")
+        }
+)
+public class MovieLanguage {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     Long id;
-    String isoCode;
-    String title;
-    Integer status;
-    @CreationTimestamp
-    LocalDateTime createdAt;
-    @UpdateTimestamp
-    LocalDateTime updatedAt;
 
-    @ManyToMany(mappedBy = "subtitleLanguages", fetch = LAZY, cascade = ALL)
-    @ToString.Exclude
-    List<Movie> movieWithSubtitleLanguages;
+    @ManyToOne(cascade = ALL)
+    @JoinColumn(name = "movie_id")
+    Movie movie;
+
+    @ManyToOne(cascade = ALL)
+    @JoinColumn(name = "language_id")
+    Language language;
+
+    Boolean isMain;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Language language = (Language) o;
-        return Objects.equals(getId(), language.getId());
+        MovieLanguage that = (MovieLanguage) o;
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getId());
     }
-
-
 }
