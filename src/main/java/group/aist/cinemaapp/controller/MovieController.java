@@ -21,23 +21,27 @@ public class MovieController {
     }
 
     @GetMapping
-    public PageableResponse<MovieResponse> getMovies(PageCriteria pageCriteria){
+    public PageableResponse<MovieResponse> getMovies(PageCriteria pageCriteria) {
         return movieService.getMovies(pageCriteria);
     }
+
     @PostMapping
-    public void saveMovie(@RequestBody MovieRequest movieRequest){
+    public void saveMovie(@RequestBody MovieRequest movieRequest) {
         movieService.saveMovie(movieRequest);
     }
+
     @PutMapping("/{id}")
-    public void updateMovie(@PathVariable Long id,@RequestBody MovieRequest movieRequest){
+    public void updateMovie(@PathVariable Long id, @RequestBody MovieRequest movieRequest) {
         movieService.updateMovie(id, movieRequest);
     }
+
     @PatchMapping("/{id}")
-    public void updateMovieStatus(@PathVariable Long id,@RequestParam String status){
+    public void updateMovieStatus(@PathVariable Long id, @RequestParam String status) {
         movieService.updateMovieStatus(id, status);
     }
+
     @DeleteMapping("{id}")
-    public void deleteMovieById(@PathVariable Long id){
+    public void deleteMovieById(@PathVariable Long id) {
         movieService.deleteMovieById(id);
     }
 

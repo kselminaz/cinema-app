@@ -6,7 +6,6 @@ import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.enums.MovieStatus;
 import group.aist.cinemaapp.model.Language;
 import group.aist.cinemaapp.model.Movie;
-import group.aist.cinemaapp.service.LanguageService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -47,10 +46,4 @@ public interface MovieMapper {
                 .collect(Collectors.toList());
     }
 
-//    @Named("getSubtitleLanguagesByIds")
-//    default List<Language> getLanguagesByIds(List<Long> languageIds) {
-//        return languageIds.stream()
-//                .map(languageService::getLanguageById)
-//                .map(languageMapper::toLanguage)
-//                .collect(Collectors.toList());}
 }
