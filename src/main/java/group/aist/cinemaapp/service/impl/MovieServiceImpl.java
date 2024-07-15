@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 import static group.aist.cinemaapp.enums.LanguageStatus.VISIBLE;
 import static group.aist.cinemaapp.enums.MovieStatus.DELETED;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 
 @Service
@@ -92,8 +91,8 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie getMovieIfExist(Long id) {
-        return movieRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, String.format(
-                "Language with id [" + id + "] was not found!", id
+        return movieRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format(
+                "Movie with id [" + id + "] was not found!", id
         )));
     }
 

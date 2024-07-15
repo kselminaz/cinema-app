@@ -1,0 +1,16 @@
+INSERT INTO movies (name, image, description, release_time, duration, age_limit, status)
+VALUES ('Inception', 'https://example.com/inception.jpg',
+'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO.',
+'2010-07-16 00:00:00', 148, 13, 1),
+('The Godfather', 'https://example.com/godfather.jpg',
+'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.',
+'1972-03-24 00:00:00', 175, 18, 1),
+('The Lion King', 'https://example.com/lionking.jpg',
+'Lion prince Simba and his father are targeted by his bitter uncle, who wants to ascend the throne himself.',
+'1994-06-24 00:00:00', 88, 7, 2),
+('The Dark Knight', 'https://example.com/darkknight.jpg',
+'When the menace known as the Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham.',
+'2008-07-18 00:00:00', 152, 13, 1),
+('Pulp Fiction', 'https://example.com/pulpfiction.jpg',
+'The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.',
+'1994-10-14 00:00:00', 154, 18, 1);
