@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create_movie_languages_table
+      author: Selminaz Kerimli
+      changes:
+        - createTable:
+            tableName: movie_languages
+            columns:
+              - column:
+                  name: movie_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie_languages_movie
+                    references: movies(id)
+              - column:
+                  name: language_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie_languages_language
+                    references: languages(id)
+              - column:
+                  name: is_main
+                  type: boolean
+                  defaultValue: false
+                  constraints:
+                    nullable: false
+          remarks: Table to store movie languages

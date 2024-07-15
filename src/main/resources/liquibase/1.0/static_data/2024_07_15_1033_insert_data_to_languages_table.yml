@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: Insert_data_to_languages_table
+      author: Selminaz Kerimli
+      changes:
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: iso_code
+                  value: az
+              - column:
+                  name: title
+                  value: Azərbaycan
+              - column:
+                  name: status
+                  value: 1
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: iso_code
+                  value: en
+              - column:
+                  name: title
+                  value: English
+              - column:
+                  name: status
+                  value: 1
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: iso_code
+                  value: ru
+              - column:
+                  name: title
+                  value: Russian
+              - column:
+                  name: status
+                  value: 1

@@ -1,7 +1,7 @@
 package group.aist.cinemaapp.service;
 
 import group.aist.cinemaapp.criteria.PageCriteria;
-import group.aist.cinemaapp.dto.request.LanguageRequest;
+import group.aist.cinemaapp.dto.request.LanguageCreateRequest;
 import group.aist.cinemaapp.dto.request.LanguageUpdateRequest;
 import group.aist.cinemaapp.dto.response.LanguageResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
@@ -11,7 +11,7 @@ public interface LanguageService {
 
     LanguageResponse getLanguageById(Long id);
 
-    void saveLanguage(LanguageRequest request);
+    void saveLanguage(LanguageCreateRequest request);
 
     void updateLanguage(Long id, LanguageUpdateRequest request);
 

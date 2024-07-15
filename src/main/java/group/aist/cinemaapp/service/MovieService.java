@@ -9,10 +9,16 @@ import group.aist.cinemaapp.model.Movie;
 public interface MovieService {
 
     MovieResponse getMovieById(Long id);
+
     PageableResponse<MovieResponse> getMovies(PageCriteria pageCriteria);
+
     void saveMovie(MovieRequest movieRequest);
+
     void updateMovie(Long id, MovieRequest movieRequest);
+
     void updateMovieStatus(Long id, String status);
+
     void deleteMovieById(Long id);
+
     Movie getMovieIfExist(Long id);
 }

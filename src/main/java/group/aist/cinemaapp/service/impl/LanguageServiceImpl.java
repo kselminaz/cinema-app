@@ -1,7 +1,7 @@
 package group.aist.cinemaapp.service.impl;
 
 import group.aist.cinemaapp.criteria.PageCriteria;
-import group.aist.cinemaapp.dto.request.LanguageRequest;
+import group.aist.cinemaapp.dto.request.LanguageCreateRequest;
 import group.aist.cinemaapp.dto.request.LanguageUpdateRequest;
 import group.aist.cinemaapp.dto.response.LanguageResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
@@ -37,7 +37,7 @@ public class LanguageServiceImpl implements LanguageService {
     }
 
     @Override
-    public void saveLanguage(LanguageRequest request) {
+    public void saveLanguage(LanguageCreateRequest request) {
         var entity = languageMapper.toEntity(request);
         entity.setStatus(VISIBLE.getId());
         languageRepository.save(entity);

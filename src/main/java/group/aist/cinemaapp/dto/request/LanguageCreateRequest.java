@@ -12,7 +12,7 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = PRIVATE)
-public class LanguageRequest {
+public class LanguageCreateRequest {
 
     @NotBlank(message = "Iso Code is required")
     String isoCode;

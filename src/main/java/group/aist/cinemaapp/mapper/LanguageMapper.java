@@ -1,6 +1,6 @@
 package group.aist.cinemaapp.mapper;
 
-import group.aist.cinemaapp.dto.request.LanguageRequest;
+import group.aist.cinemaapp.dto.request.LanguageCreateRequest;
 import group.aist.cinemaapp.dto.response.LanguageResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.enums.LanguageStatus;
@@ -15,7 +15,7 @@ import java.util.List;
 @Mapper(componentModel = "spring",uses={LanguageStatus.class})
 public interface LanguageMapper {
 
-    Language toEntity(LanguageRequest request );
+    Language toEntity(LanguageCreateRequest request );
 
     @Mapping(target = "status", source = "status", qualifiedByName = "getById")
     LanguageResponse toResponse(Language entity);

@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.EAGER;
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -20,46 +22,51 @@ import static lombok.AccessLevel.PRIVATE;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "movies")
+@Table(name = "movie_sessions")
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class Movie {
+public class MovieSession {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     Long id;
-    String name;
-    String image;
-    String description;
-    LocalDateTime releaseTime;
-    Integer duration;
-    Integer ageLimit;
 
-    @ManyToMany(fetch = EAGER)
-    @JoinTable(
-            name = "movie_subtitle_languages",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "language_id"))
-    List<Language> subtitleLanguages;
+    @ManyToOne(fetch = LAZY,cascade = ALL)
+    @JoinColumn(name = "movie_id")
+    @ToString.Exclude
+    Movie movie;
 
+    @ManyToOne(fetch = LAZY,cascade = ALL)
+    @JoinColumn(name = "hall_id")
+    @ToString.Exclude
+    Hall hall;
+
+    @ManyToOne(fetch = LAZY,cascade = ALL)
+    @JoinColumn(name = "subtitle_lang_id")
+    @ToString.Exclude
+    Language subtitleLanguage;
+
+    LocalDateTime datetime;
 
     Integer status;
+
     @CreationTimestamp
     LocalDateTime createdAt;
+
     @UpdateTimestamp
     LocalDateTime updatedAt;
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Movie movie = (Movie) o;
-        return Objects.equals(id, movie.id);
+        MovieSession that = (MovieSession) o;
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(getId());
     }
 }
+
