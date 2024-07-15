@@ -1,11 +1,10 @@
 package group.aist.cinemaapp.controller;
 
 import group.aist.cinemaapp.criteria.PageCriteria;
-import group.aist.cinemaapp.dto.request.LanguageRequest;
+import group.aist.cinemaapp.dto.request.LanguageCreateRequest;
 import group.aist.cinemaapp.dto.request.LanguageUpdateRequest;
 import group.aist.cinemaapp.dto.response.LanguageResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
-import group.aist.cinemaapp.enums.LanguageStatus;
 import group.aist.cinemaapp.service.LanguageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +33,7 @@ public class LanguageController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public void saveLanguage(@Valid @RequestBody LanguageRequest request) {
+    public void saveLanguage(@Valid @RequestBody LanguageCreateRequest request) {
 
         languageService.saveLanguage(request);
     }

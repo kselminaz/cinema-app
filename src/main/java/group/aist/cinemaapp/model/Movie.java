@@ -8,10 +8,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
-import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -23,6 +22,13 @@ import static lombok.AccessLevel.PRIVATE;
 @Table(name = "movies")
 @Builder
 @FieldDefaults(level = PRIVATE)
+@NamedEntityGraph(
+        name = "movieWithLanguages",
+        attributeNodes = {
+                @NamedAttributeNode("languages"),
+                @NamedAttributeNode("subtitleLanguages")
+        }
+)
 public class Movie {
 
     @Id
@@ -34,12 +40,20 @@ public class Movie {
     LocalDateTime releaseTime;
     Integer duration;
     Integer ageLimit;
-    @ManyToMany(fetch = EAGER)
+
+    @OneToMany(mappedBy = "movie", orphanRemoval = true)
+    @ToString.Exclude
+    Set<MovieLanguage> languages;
+
+    @ManyToMany
     @JoinTable(
             name = "movie_subtitle_languages",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "language_id"))
-    List<Language> subtitleLanguages;
+    @ToString.Exclude
+    Set<Language> subtitleLanguages;
+
+
     Integer status;
     @CreationTimestamp
     LocalDateTime createdAt;

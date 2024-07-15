@@ -16,16 +16,10 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class MovieResponse {
+public class MovieLanguageResponse {
 
     Long id;
-    String name;
-    String image;
-    String description;
-    LocalDateTime releaseTime;
-    Integer duration;
-    Integer ageLimit;
-    List<MovieLanguageResponse> languages;
-    List<String> subtitleLanguages;
-    String status;
+    String language;
+    Boolean isMain;
+
 }

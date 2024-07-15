@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.dto.response;
 
+import group.aist.cinemaapp.enums.MovieSessionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -16,16 +16,19 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class MovieResponse {
+public class MovieSessionResponse {
 
     Long id;
-    String name;
-    String image;
-    String description;
-    LocalDateTime releaseTime;
-    Integer duration;
-    Integer ageLimit;
-    List<MovieLanguageResponse> languages;
-    List<String> subtitleLanguages;
-    String status;
+
+    MovieResponse movie;
+
+    String language;
+
+    String subtitleLanguage;
+
+    LocalDateTime datetime;
+
+    MovieSessionStatus status;
+
 }
+
