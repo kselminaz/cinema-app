@@ -13,9 +13,9 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = PRIVATE)
-public class SectorRequest {
-    @NotBlank(message = "Name cannot be blank")
+public class SectorCreateRequest {
+    @NotBlank(message = "Name is required")
     String name;
-    @NotNull(message = "Status cannot be null")
-    Integer status;
+    @NotNull(message = "Hall ID is required")
+    Long hallId;
 }

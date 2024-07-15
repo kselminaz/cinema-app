@@ -18,7 +18,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "hall")
+@Table(name = "sectors")
 @Builder
 @FieldDefaults(level = PRIVATE)
 public class Sector {
@@ -32,6 +32,11 @@ public class Sector {
 
     @UpdateTimestamp
     LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "hall_id")
+    @ToString.Exclude
+    Hall hall;
 
     @Override
     public boolean equals(Object o) {

@@ -5,14 +5,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class HallRequest {
-     @NotBlank(message = "Name cannot be blank")
-     String name;
-     @NotNull(message = "Total seats count cannot be null")
-     Integer totalSeatsCount;
-     @NotNull(message = "Status cannot be null")
-     Integer status;
+public class HallCreateRequest {
+    @NotBlank(message = "Name is required")
+    String name;
+    @NotNull(message = "Total seats count is required")
+    Integer totalSeatsCount;
+
 
 }

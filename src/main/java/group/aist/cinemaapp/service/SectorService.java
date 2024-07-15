@@ -1,25 +1,25 @@
 package group.aist.cinemaapp.service;
 
 import group.aist.cinemaapp.criteria.PageCriteria;
-import group.aist.cinemaapp.dto.request.SectorRequest;
+import group.aist.cinemaapp.dto.request.SectorCreateRequest;
+import group.aist.cinemaapp.dto.request.SectorUpdateRequest;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.dto.response.SectorResponse;
-import group.aist.cinemaapp.enums.SectorStatus;
-import group.aist.cinemaapp.model.Hall;
+import group.aist.cinemaapp.model.Sector;
 
 public interface SectorService {
     SectorResponse getSectorById(Long id);
 
-    void saveSector(SectorRequest request);
+    void saveSector(SectorCreateRequest request);
 
-    void updateSector(Long id, SectorRequest request);
+    void updateSector(Long id, SectorUpdateRequest request);
 
-    void updateSectorWithStatus(Long id, SectorStatus status);
+    void updateSectorWithStatus(Long id, String status);
 
     void deleteSector(Long id);
-    PageableResponse<SectorResponse> getSector(PageCriteria pageCriteria);
 
-    Hall getSectorIfExist(Long id);
+    PageableResponse<SectorResponse> getSectors(PageCriteria pageCriteria);
 
+    Sector fetchSectorIfExist(Long id);
 }
 

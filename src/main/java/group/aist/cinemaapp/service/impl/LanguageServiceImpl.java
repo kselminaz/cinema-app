@@ -49,7 +49,8 @@ public class LanguageServiceImpl implements LanguageService {
         var entity = fetchLanguageIfExist(id);
         ofNullable(request.getIsoCode()).ifPresent(entity::setIsoCode);
         ofNullable(request.getTitle()).ifPresent(entity::setTitle);
-        ofNullable(request.getStatus()).ifPresent(status -> entity.setStatus(LanguageStatus.valueOf(request.getStatus()).getId()));
+        ofNullable(request.getStatus()).ifPresent(status -> entity
+                .setStatus(LanguageStatus.valueOf(request.getStatus()).getId()));
         languageRepository.save(entity);
 
     }

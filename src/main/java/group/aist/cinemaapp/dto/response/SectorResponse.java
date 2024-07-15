@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.dto.response;
 
+import group.aist.cinemaapp.enums.SectorStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,8 +19,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class SectorResponse {
     Long id;
     String name;
-
-    Integer status;
+    SectorStatus status;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 }
