@@ -1,80 +1,125 @@
 databaseChangeLog:
   - changeSet:
       id: Insert_data_to_movies_table
-      author: Selminaz Kerimli
+      author: Alsu Ismayilzade
       changes:
         - insert:
             tableName: movies
             columns:
               - column:
                   name: name
-                  value: Inception
+                  value: 'Inception'
               - column:
                   name: image
-                  value: https://example.com/inception.jpg
+                  value: 'https://example.com/inception.jpg'
               - column:
                   name: description
-                  value: A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO
+                  value: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO.'
               - column:
                   name: release_time
-                  value: 2010-07-16 00:00:00
+                  valueDate: '2010-07-16 00:00:00'
               - column:
                   name: duration
-                  value: 148
+                  valueNumeric: 148
               - column:
                   name: age_limit
-                  value: 13
+                  valueNumeric: 13
               - column:
                   name: status
                   value: 1
         - insert:
-            tableName: movie_languages
+            tableName: movies
             columns:
               - column:
-                  name: movie_id
-                  value: 1
+                  name: name
+                  value: 'The Godfather'
               - column:
-                  name: language_id
-                  value: 1
+                  name: image
+                  value: 'https://example.com/godfather.jpg'
               - column:
-                  name: is_main
-                  value: false
+                  name: description
+                  value: 'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.'
+              - column:
+                  name: release_time
+                  valueDate: '1972-03-24 00:00:00'
+              - column:
+                  name: duration
+                  valueNumeric: 175
+              - column:
+                  name: age_limit
+                  valueNumeric: 18
+              - column:
+                  name: status
+                  value: 1
         - insert:
-            tableName: movie_languages
+            tableName: movies
             columns:
               - column:
-                  name: movie_id
-                  value: 1
+                  name: name
+                  value: 'The Lion King'
               - column:
-                  name: language_id
+                  name: image
+                  value: 'https://example.com/lionking.jpg'
+              - column:
+                  name: description
+                  value: 'Lion prince Simba and his father are targeted by his bitter uncle, who wants to ascend the throne himself.'
+              - column:
+                  name: release_time
+                  valueDate: '1994-06-24 00:00:00'
+              - column:
+                  name: duration
+                  valueNumeric: 88
+              - column:
+                  name: age_limit
+                  valueNumeric: 7
+              - column:
+                  name: status
+                  value: 1
+        - insert:
+            tableName: movies
+            columns:
+              - column:
+                  name: name
+                  value: 'The Dark Knight'
+              - column:
+                  name: image
+                  value: 'https://example.com/darkknight.jpg'
+              - column:
+                  name: description
+                  value: 'When the menace known as the Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham.'
+              - column:
+                  name: release_time
+                  valueDate: '2008-07-18 00:00:00'
+              - column:
+                  name: duration
+                  valueNumeric: 152
+              - column:
+                  name: age_limit
+                  valueNumeric: 13
+              - column:
+                  name: status
                   value: 2
-              - column:
-                  name: is_main
-                  value: true
         - insert:
-            tableName: movie_subtitle_languages
+            tableName: movies
             columns:
               - column:
-                  name: movie_id
-                  value: 1
+                  name: name
+                  value: 'Pulp Fiction'
               - column:
-                  name: language_id
-                  value: 1
-        - insert:
-            tableName: movie_subtitle_languages
-            columns:
+                  name: image
+                  value: 'https://example.com/pulpfiction.jpg'
               - column:
-                  name: movie_id
-                  value: 1
+                  name: description
+                  value: 'The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.'
               - column:
-                  name: language_id
-                  value: 2
-        - insert:
-            tableName: movie_subtitle_languages
-            columns:
+                  name: release_time
+                  valueDate: '1994-10-14 00:00:00'
               - column:
-                  name: movie_id
-                  value: 1
+                  name: duration
+                  valueNumeric: 154
               - column:
-                  name: language_id
+                  name: age_limit
+                  valueNumeric: 18
+              - column:
+                  name: status
                   value: 3

@@ -1,6 +1,6 @@
 package group.aist.cinemaapp.mapper;
 
-import group.aist.cinemaapp.dto.request.MovieRequest;
+import group.aist.cinemaapp.dto.request.MovieCreateRequest;
 import group.aist.cinemaapp.dto.response.MovieLanguageResponse;
 import group.aist.cinemaapp.dto.response.MovieResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
@@ -27,10 +27,10 @@ public interface MovieMapper {
 
     @Mapping(target = "subtitleLanguages", ignore = true)
     @Mapping(target = "languages", ignore = true)
-    Movie toMovie(MovieRequest movieRequest);
+    Movie toMovie(MovieCreateRequest movieCreateRequest);
 
     @Mapping(target = "movie", ignore = true)
-    MovieLanguage toMovieLanguage(MovieRequest movieRequest);
+    MovieLanguage toMovieLanguage(MovieCreateRequest movieCreateRequest);
 
     @Mapping(target = "data", source = "content", qualifiedByName = "getMovieList")
     @Mapping(target = "hasNextPage", expression = "java(page.hasNext())")

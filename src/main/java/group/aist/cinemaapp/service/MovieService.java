@@ -1,8 +1,9 @@
 package group.aist.cinemaapp.service;
 
 import group.aist.cinemaapp.criteria.PageCriteria;
+import group.aist.cinemaapp.dto.request.MovieCreateRequest;
 import group.aist.cinemaapp.dto.request.MovieLanguageRequest;
-import group.aist.cinemaapp.dto.request.MovieRequest;
+import group.aist.cinemaapp.dto.request.MovieUpdateRequest;
 import group.aist.cinemaapp.dto.response.MovieResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.model.Movie;
@@ -14,9 +15,9 @@ public interface MovieService {
 
     PageableResponse<MovieResponse> getMovies(PageCriteria pageCriteria);
 
-    void saveMovie(MovieRequest movieRequest);
+    void saveMovie(MovieCreateRequest movieCreateRequest);
 
-    void updateMovie(Long id, MovieRequest movieRequest);
+    void updateMovie(Long id, MovieUpdateRequest movieUpdateRequest);
 
     void updateMovieStatus(Long id, String status);
 

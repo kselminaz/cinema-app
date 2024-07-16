@@ -1,7 +1,7 @@
+
 package group.aist.cinemaapp.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,19 +18,18 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class MovieRequest {
-
+public class MovieUpdateRequest {
     String name;
     String image;
     String description;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime releaseTime;
+
     Integer duration;
     Integer ageLimit;
-
-    @NotEmpty(message = "At least one movie language is required")
     List<MovieLanguageRequest> languages;
-
     List<Long> subtitleLanguages;
+    String status;
+
 }
