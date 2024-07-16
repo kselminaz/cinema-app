@@ -90,7 +90,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie getMovieIfExist(Long id) {
-        return movieRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Movie with id [" + id + "] is not visible."));
+        return movieRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Movie with id [" + id + "] is not found."));
     }
 
     public void setSubtitleLanguageIfExist(Movie movie, MovieRequest movieRequest) {
