@@ -10,8 +10,9 @@ import java.util.Optional;
 
 
 public interface HallRepository extends JpaRepository<Hall, Long> {
-    //    @EntityGraph(attributePaths = {"sector"})
-//    Optional<Hall> findById(Long id);
-//    @EntityGraph(attributePaths = {"sector"})
+    @EntityGraph(value = "hallWithRelations")
+    Optional<Hall> findById(Long id);
+
+    @EntityGraph(value = "hallWithRelations")
     Page<Hall> findAllByStatusIs(Pageable pageable, Integer status);
 }

@@ -8,11 +8,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 import static jakarta.persistence.CascadeType.ALL;
-import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
@@ -25,24 +23,40 @@ import static lombok.AccessLevel.PRIVATE;
 @Table(name = "movie_sessions")
 @Builder
 @FieldDefaults(level = PRIVATE)
+@NamedEntityGraph(
+        name = "movieSessionWithRelations",
+        attributeNodes = {
+                @NamedAttributeNode("movie"),
+                @NamedAttributeNode("hall"),
+                @NamedAttributeNode("language"),
+                @NamedAttributeNode("subtitleLanguage"),
+
+        }
+)
 public class MovieSession {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     Long id;
 
-    @ManyToOne(fetch = LAZY,cascade = ALL)
+    @ManyToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "movie_id")
     @ToString.Exclude
     Movie movie;
 
-    @ManyToOne(fetch = LAZY,cascade = ALL)
+    @ManyToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "hall_id")
     @ToString.Exclude
     Hall hall;
 
-    @ManyToOne(fetch = LAZY,cascade = ALL)
-    @JoinColumn(name = "subtitle_lang_id")
+
+    @ManyToOne(fetch = LAZY, cascade = ALL)
+    @JoinColumn(name = "language_id")
+    @ToString.Exclude
+    MovieLanguage language;
+
+    @ManyToOne(fetch = LAZY, cascade = ALL)
+    @JoinColumn(name = "subtitle_language_id")
     @ToString.Exclude
     Language subtitleLanguage;
 

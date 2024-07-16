@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: Insert_data_to_halls_table
+      author: Selminaz Kerimli
+      changes:
+        - insert:
+            tableName: halls
+            columns:
+              - column:
+                  name: name
+                  value: hall 1
+              - column:
+                  name: total_seats_count
+                  value: 30
+              - column:
+                  name: status
+                  value: 1
+        - insert:
+            tableName: halls
+            columns:
+              - column:
+                  name: name
+                  value: hall 2
+              - column:
+                  name: total_seats_count
+                  value: 30
+              - column:
+                  name: status
+                  value: 1

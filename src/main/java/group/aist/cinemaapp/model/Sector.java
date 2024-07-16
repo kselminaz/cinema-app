@@ -33,7 +33,7 @@ public class Sector {
     @UpdateTimestamp
     LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "hall_id")
     @ToString.Exclude
     Hall hall;
@@ -42,15 +42,14 @@ public class Sector {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Language language = (Language) o;
-        return Objects.equals(getId(), language.getId());
+        Sector sector = (Sector) o;
+        return Objects.equals(getId(), sector.getId());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getId());
     }
-
 }
 
 

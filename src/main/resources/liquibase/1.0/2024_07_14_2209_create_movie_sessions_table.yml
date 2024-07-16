@@ -38,7 +38,6 @@ databaseChangeLog:
                   name: subtitle_language_id
                   type: bigint
                   constraints:
-                    nullable: false
                     foreignKeyName: fk_movie_sessions_subtitle_lang
                     references: languages(id)
               - column:
