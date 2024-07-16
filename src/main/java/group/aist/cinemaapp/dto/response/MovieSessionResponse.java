@@ -22,6 +22,8 @@ public class MovieSessionResponse {
 
     MovieResponse movie;
 
+    String hall;
+
     String language;
 
     String subtitleLanguage;

@@ -7,10 +7,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
-import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -22,6 +21,12 @@ import static lombok.AccessLevel.PRIVATE;
 @Table(name = "halls")
 @Builder
 @FieldDefaults(level = PRIVATE)
+@NamedEntityGraph(
+        name = "hallWithRelations",
+        attributeNodes = {
+                @NamedAttributeNode("sector"),
+        }
+)
 public class Hall {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -35,20 +40,19 @@ public class Hall {
     @UpdateTimestamp
     LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "hall", fetch = FetchType.EAGER)
-    List<Sector> sector;
+    @OneToMany(mappedBy = "hall")
+    Set<Sector> sector;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Language language = (Language) o;
-        return Objects.equals(getId(), language.getId());
+        Hall hall = (Hall) o;
+        return Objects.equals(getId(), hall.getId());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getId());
     }
-
 }
