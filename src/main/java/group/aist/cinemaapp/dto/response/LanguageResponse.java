@@ -14,12 +14,11 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class LanguageResponse{
+public class LanguageResponse {
 
     Long id;
     String isoCode;
     String title;
     LanguageStatus status;
-
 }
 

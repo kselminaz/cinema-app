@@ -1,7 +1,8 @@
 package group.aist.cinemaapp.service.impl;
 
+import group.aist.cinemaapp.annotation.Log;
 import group.aist.cinemaapp.criteria.PageCriteria;
-import group.aist.cinemaapp.dto.request.LanguageRequest;
+import group.aist.cinemaapp.dto.request.LanguageCreateRequest;
 import group.aist.cinemaapp.dto.request.LanguageUpdateRequest;
 import group.aist.cinemaapp.dto.response.LanguageResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
@@ -26,6 +27,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
+@Log
 public class LanguageServiceImpl implements LanguageService {
     private final LanguageRepository languageRepository;
     private final LanguageMapper languageMapper;
@@ -37,7 +39,7 @@ public class LanguageServiceImpl implements LanguageService {
     }
 
     @Override
-    public void saveLanguage(LanguageRequest request) {
+    public void saveLanguage(LanguageCreateRequest request) {
         var entity = languageMapper.toEntity(request);
         entity.setStatus(VISIBLE.getId());
         languageRepository.save(entity);
@@ -49,7 +51,8 @@ public class LanguageServiceImpl implements LanguageService {
         var entity = fetchLanguageIfExist(id);
         ofNullable(request.getIsoCode()).ifPresent(entity::setIsoCode);
         ofNullable(request.getTitle()).ifPresent(entity::setTitle);
-        ofNullable(request.getStatus()).ifPresent(status -> entity.setStatus(LanguageStatus.valueOf(request.getStatus()).getId()));
+        ofNullable(request.getStatus()).ifPresent(status -> entity
+                .setStatus(LanguageStatus.valueOf(request.getStatus()).getId()));
         languageRepository.save(entity);
 
     }

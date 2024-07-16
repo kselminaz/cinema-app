@@ -7,8 +7,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
+import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -31,6 +34,10 @@ public class Language {
     LocalDateTime createdAt;
     @UpdateTimestamp
     LocalDateTime updatedAt;
+
+    @ManyToMany(mappedBy = "subtitleLanguages", fetch = LAZY, cascade = ALL)
+    @ToString.Exclude
+    List<Movie> movieWithSubtitleLanguages;
 
     @Override
     public boolean equals(Object o) {

@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: Insert_data_to_sectors_table
+      author: Alsu Ismayilzade
+      changes:
+        - insert:
+            tableName: sectors
+            columns:
+              - column:
+                  name: name
+                  value: 'A'
+              - column:
+                  name: hall_id
+                  value: 1
+              - column:
+                  name: status
+                  value: 1
+        - insert:
+            tableName: sectors
+            columns:
+              - column:
+                  name: name
+                  value: 'A'
+              - column:
+                  name: hall_id
+                  value: 2
+              - column:
+                  name: status
+                  value: 2
+        - insert:
+            tableName: sectors
+            columns:
+              - column:
+                  name: name
+                  value: 'B'
+              - column:
+                  name: hall_id
+                  value: 1
+              - column:
+                  name: status
+                  value: 1

@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: Insert_data_to_seats_table
+      author: Alsu Ismayilzade
+      changes:
+        - insert:
+            tableName: seats
+            columns:
+              - column:
+                  name: row
+                  value: 'a'
+              - column:
+                  name: sector_id
+                  value: 1
+              - column:
+                  name: seat_number
+                  value: 12
+              - column:
+                  name: status
+                  value: 1
+        - insert:
+            tableName: seats
+            columns:
+              - column:
+                  name: row
+                  value: 'b'
+              - column:
+                  name: sector_id
+                  value: 1
+              - column:
+                  name: seat_number
+                  value: 13
+              - column:
+                  name: status
+                  value: 1
+        - insert:
+            tableName: seats
+            columns:
+              - column:
+                  name: row
+                  value: 'c'
+              - column:
+                  name: sector_id
+                  value: 2
+              - column:
+                  name: seat_number
+                  value: 12
+              - column:
+                  name: status
+                  value: 1

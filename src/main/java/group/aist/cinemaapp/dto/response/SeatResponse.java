@@ -16,8 +16,7 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE)
 public class SeatResponse {
 
-    Long id;
-    String sector;
+    String sectorName;
     String row;
     Integer seat_number;
     String status;

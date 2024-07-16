@@ -1,12 +1,17 @@
 package group.aist.cinemaapp.service.impl;
 
-import group.aist.cinemaapp.dto.request.SeatRequest;
+import group.aist.cinemaapp.dto.request.SeatCreateRequest;
+import group.aist.cinemaapp.dto.request.SeatUpdateRequest;
 import group.aist.cinemaapp.dto.response.SeatResponse;
+import group.aist.cinemaapp.enums.MovieSessionStatus;
+import group.aist.cinemaapp.enums.MovieStatus;
 import group.aist.cinemaapp.enums.SeatStatus;
 import group.aist.cinemaapp.mapper.SeatMapper;
 import group.aist.cinemaapp.model.Seat;
+import group.aist.cinemaapp.model.Sector;
 import group.aist.cinemaapp.repository.SeatRepository;
 import group.aist.cinemaapp.service.SeatService;
+import group.aist.cinemaapp.service.SectorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static group.aist.cinemaapp.enums.SeatStatus.*;
+import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -24,12 +30,13 @@ public class SeatServiceImpl implements SeatService {
 
     private final SeatRepository seatRepository;
     private final SeatMapper seatMapper;
+    private final SectorService sectorService;
 
 
     @Override
     public SeatResponse getSeatById(Long id) {
         Seat seat = getSeatIfExist(id);
-        if(seat.getStatus() == DELETED.getId()){
+        if (seat.getStatus() == DELETED.getId()) {
             throw new ResponseStatusException(NOT_FOUND, "Seat with id " + id + " is DELETED");
         }
         return seatMapper.toSeatResponse(seat);
@@ -37,24 +44,27 @@ public class SeatServiceImpl implements SeatService {
 
     @Override
     public List<SeatResponse> getSeats() {
-        return List.of();
+        List<Seat> seats = (List<Seat>) seatRepository.findAll();
+        return seatMapper.getSeatList(seats);
     }
 
     @Override
-    public void saveSeat(SeatRequest seatRequest) {
-        Seat seat = seatMapper.toSeat(seatRequest);
+    public void saveSeat(SeatCreateRequest seatCreateRequest) {
+        Seat seat = seatMapper.toSeat(seatCreateRequest);
         seat.setStatus(AVAILABLE.getId());
-        setSectorIfExist(seat, seatRequest);
+        addRelations(seat, seatCreateRequest.getSector());
         seatRepository.save(seat);
     }
 
 
     @Override
-    public void updateSeat(Long id, SeatRequest seatRequest) {
+    public void updateSeat(Long id, SeatUpdateRequest seatUpdateRequest) {
+
         Seat seat = getSeatIfExist(id);
-        seat.setRow(seatRequest.getRow());
-        seat.setSeat_number(seatRequest.getSeat_number());
-        setSectorIfExist(seat, seatRequest);
+        ofNullable(seatUpdateRequest.getRow()).ifPresent(seat::setRow);
+        ofNullable(seatUpdateRequest.getSeat_number()).ifPresent(seat::setSeat_number);
+        ofNullable(seatUpdateRequest.getStatus()).ifPresent(status -> seat.setStatus(SeatStatus.valueOf(seatUpdateRequest.getStatus()).getId()));
+        addRelations(seat, seatUpdateRequest.getSector());
         seatRepository.save(seat);
     }
 
@@ -69,9 +79,9 @@ public class SeatServiceImpl implements SeatService {
 
     @Override
     public void deleteSeatById(Long id) {
-      Seat seat = getSeatIfExist(id);
-      seat.setStatus(DELETED.getId());
-      seatRepository.save(seat);
+        Seat seat = getSeatIfExist(id);
+        seat.setStatus(DELETED.getId());
+        seatRepository.save(seat);
     }
 
     @Override
@@ -88,9 +98,8 @@ public class SeatServiceImpl implements SeatService {
 
     }
 
-    private void setSectorIfExist(Seat seat, SeatRequest seatRequest) {
-        Long sectorId = seatRequest.getSector();
-        if(sectorId != null){
+    private void addRelations(Seat seat, Long sectorId) {
+        if (sectorId != null) {
             Sector sector = sectorService.fetchSectorIfExist(sectorId);
             seat.setSector(sector);
         }

@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: Insert_data_to_movie_sessions_table
+      author: Selminaz Kerimli
+      changes:
+        - insert:
+            tableName: movie_sessions
+            columns:
+              - column:
+                  name: movie_id
+                  value: 1
+              - column:
+                  name: hall_id
+                  value: 1
+              - column:
+                  name: language_id
+                  value: 1
+              - column:
+                  name: subtitle_language_id
+                  value: 1
+              - column:
+                  name: datetime
+                  value: 2024-07-15 20:00:00
+              - column:
+                  name: status
+                  value: 1

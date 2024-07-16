@@ -25,6 +25,7 @@ public class MovieResponse {
     LocalDateTime releaseTime;
     Integer duration;
     Integer ageLimit;
+    List<MovieLanguageResponse> languages;
     List<String> subtitleLanguages;
     String status;
 }

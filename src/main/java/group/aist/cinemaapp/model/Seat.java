@@ -7,8 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -20,20 +20,41 @@ import static lombok.AccessLevel.PRIVATE;
 @Table(name = "seats")
 @Builder
 @FieldDefaults(level = PRIVATE)
+@NamedEntityGraph(
+        name = "seatWithRelations",
+        attributeNodes = {
+                @NamedAttributeNode("sector"),
+        }
+)
 public class Seat {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     Long id;
     String row;
-    Integer seat_number;
+    Long seat_number;
     Integer status;
-    @ManyToOne(fetch = EAGER)
+
+    @ManyToOne
     @JoinColumn(name = "sector_id")
     @ToString.Exclude
     Sector sector;
+
     @CreationTimestamp
     LocalDateTime createdAt;
     @UpdateTimestamp
     LocalDateTime updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Seat seat = (Seat) o;
+        return Objects.equals(id, seat.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

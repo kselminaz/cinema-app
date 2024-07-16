@@ -1,6 +1,7 @@
 package group.aist.cinemaapp.controller;
 
-import group.aist.cinemaapp.dto.request.SeatRequest;
+import group.aist.cinemaapp.dto.request.SeatCreateRequest;
+import group.aist.cinemaapp.dto.request.SeatUpdateRequest;
 import group.aist.cinemaapp.dto.response.SeatResponse;
 import group.aist.cinemaapp.service.SeatService;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +25,12 @@ public class SeatController {
         return seatService.getSeats();
     }
     @PostMapping
-    public void saveSeat(@RequestBody SeatRequest seatRequest) {
-        seatService.saveSeat(seatRequest);
+    public void saveSeat(@RequestBody SeatCreateRequest seatCreateRequest) {
+        seatService.saveSeat(seatCreateRequest);
     }
     @PutMapping("{id}")
-    public void updateSeat(@PathVariable Long id, @RequestBody SeatRequest seatRequest) {
-        seatService.updateSeat(id, seatRequest);
+    public void updateSeat(@PathVariable Long id, @RequestBody SeatUpdateRequest seatUpdateRequest) {
+        seatService.updateSeat(id, seatUpdateRequest);
     }
     @PatchMapping("{id}")
     public void updateSeatStatus(@PathVariable Long id, @RequestParam String status) {

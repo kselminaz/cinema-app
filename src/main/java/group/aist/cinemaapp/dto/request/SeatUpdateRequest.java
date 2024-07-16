@@ -1,5 +1,7 @@
 package group.aist.cinemaapp.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,9 +15,11 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class SeatRequest {
+public class SeatUpdateRequest {
 
     String row;
-    Integer seat_number;
+    Long seat_number;
     Long sector;
+    String status;
+
 }

@@ -1,11 +1,10 @@
 package group.aist.cinemaapp.controller;
 
 import group.aist.cinemaapp.criteria.PageCriteria;
-import group.aist.cinemaapp.dto.request.LanguageRequest;
+import group.aist.cinemaapp.dto.request.LanguageCreateRequest;
 import group.aist.cinemaapp.dto.request.LanguageUpdateRequest;
 import group.aist.cinemaapp.dto.response.LanguageResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
-import group.aist.cinemaapp.enums.LanguageStatus;
 import group.aist.cinemaapp.service.LanguageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @RequiredArgsConstructor
 @RequestMapping("/v1/languages")
 public class LanguageController {
-    
+
     private final LanguageService languageService;
 
     @GetMapping("/{id}")
@@ -34,7 +33,7 @@ public class LanguageController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public void saveLanguage(@Valid @RequestBody LanguageRequest request) {
+    public void saveLanguage(@Valid @RequestBody LanguageCreateRequest request) {
 
         languageService.saveLanguage(request);
     }
@@ -47,14 +46,14 @@ public class LanguageController {
 
     @PutMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
-    public void updateLanguage(@PathVariable Long id,@Valid @RequestBody LanguageUpdateRequest request) {
+    public void updateLanguage(@PathVariable Long id, @Valid @RequestBody LanguageUpdateRequest request) {
 
         languageService.updateLanguage(id, request);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
-    public void updateLanguageWithStatus(@PathVariable Long id,@RequestParam String status) {
+    public void updateLanguageWithStatus(@PathVariable Long id, @RequestParam String status) {
 
         languageService.updateLanguageWithStatus(id, status);
     }
