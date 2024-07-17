@@ -1,13 +1,12 @@
-package group.aist.cinemaapp.dto.response;
+package group.aist.cinemaapp.dto.request;
 
-import group.aist.cinemaapp.enums.SectorStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -16,9 +15,11 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class SectorResponse {
-    Long id;
-    String name;
-    SectorStatus status;
+public class SeatUpdateRequest {
+
+    String row;
+    Long seat_number;
+    Long sector;
+    String status;
 
 }

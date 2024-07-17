@@ -6,9 +6,9 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/cinema_app
+    url: jdbc:postgresql://localhost:5432/cinema-app
     username: postgres
-    password: postgres
+    password: 1928
   liquibase:
     change-log: liquibase/changelog-master.yml
     enabled: true

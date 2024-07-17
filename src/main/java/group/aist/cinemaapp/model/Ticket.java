@@ -32,6 +32,7 @@ import static lombok.AccessLevel.PRIVATE;
         name = "ticketWithRelations",
         attributeNodes = {
                 @NamedAttributeNode("seat"),
+                @NamedAttributeNode("session")
 
 
         }
@@ -41,6 +42,13 @@ public class Ticket {
     @GeneratedValue(strategy = IDENTITY)
     Long id;
     BigDecimal price;
+    @ManyToOne(cascade = ALL)
+    @JoinColumn(name = "seat_id")
+    Seat seat;
+    @ManyToOne(cascade = ALL)
+    @JoinColumn(name = "session_id")
+    MovieSession session;
+
     @CreationTimestamp
     LocalDateTime createdAt;
 
@@ -48,22 +56,6 @@ public class Ticket {
     LocalDateTime updatedAt;
     Integer status;
 
-
-    @OneToOne(fetch = LAZY, cascade = ALL)
-    @JoinColumn(name = "hall_id")
-    @ToString.Exclude
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Sector sector = (Sector) o;
-        return Objects.equals(getId(), sector.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
-    }
 }
 
 

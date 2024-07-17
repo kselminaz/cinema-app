@@ -2,11 +2,13 @@ package group.aist.cinemaapp.service.impl;
 
 import group.aist.cinemaapp.annotation.Log;
 import group.aist.cinemaapp.criteria.PageCriteria;
+import group.aist.cinemaapp.dto.request.MovieCreateRequest;
 import group.aist.cinemaapp.dto.request.MovieLanguageRequest;
-import group.aist.cinemaapp.dto.request.MovieRequest;
+import group.aist.cinemaapp.dto.request.MovieUpdateRequest;
 import group.aist.cinemaapp.dto.response.MovieResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.enums.MovieStatus;
+import group.aist.cinemaapp.enums.SeatStatus;
 import group.aist.cinemaapp.mapper.MovieMapper;
 import group.aist.cinemaapp.model.Language;
 import group.aist.cinemaapp.model.Movie;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 
 import static group.aist.cinemaapp.enums.LanguageStatus.VISIBLE;
 import static group.aist.cinemaapp.enums.MovieStatus.DELETED;
+import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -55,24 +58,25 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void saveMovie(MovieRequest movieRequest) {
-        Movie movie = movieMapper.toMovie(movieRequest);
+    public void saveMovie(MovieCreateRequest movieCreateRequest) {
+        Movie movie = movieMapper.toMovie(movieCreateRequest);
         movie.setStatus(MovieStatus.VISIBLE.getId());
-        addRelations(movie, movieRequest.getSubtitleLanguages(), movieRequest.getLanguages());
+        addRelations(movie, movieCreateRequest.getSubtitleLanguages(), movieCreateRequest.getLanguages());
         movieRepository.save(movie);
     }
 
     @Override
-    public void updateMovie(Long id, MovieRequest movieRequest) {
-        Movie movie = fetchMovieIfExist(id);
+    public void updateMovie(Long id, MovieUpdateRequest movieUpdateRequest) {
 
-        movie.setName(movieRequest.getName());
-        movie.setImage(movieRequest.getImage());
-        movie.setDescription(movieRequest.getDescription());
-        movie.setReleaseTime(movieRequest.getReleaseTime());
-        movie.setDuration(movieRequest.getDuration());
-        movie.setAgeLimit(movieRequest.getAgeLimit());
-        addRelations(movie, movieRequest.getSubtitleLanguages(), movieRequest.getLanguages());
+        Movie movie = fetchMovieIfExist(id);
+        ofNullable(movieUpdateRequest.getName()).ifPresent(movie::setName);
+        ofNullable(movieUpdateRequest.getImage()).ifPresent(movie::setImage);
+        ofNullable(movieUpdateRequest.getDescription()).ifPresent(movie::setDescription);
+        ofNullable(movieUpdateRequest.getReleaseTime()).ifPresent(movie::setReleaseTime);
+        ofNullable(movieUpdateRequest.getDuration()).ifPresent(movie::setDuration);
+        ofNullable(movieUpdateRequest.getAgeLimit()).ifPresent(movie::setAgeLimit);
+        ofNullable(movieUpdateRequest.getStatus()).ifPresent(status -> movie.setStatus(MovieStatus.valueOf(movieUpdateRequest.getStatus()).getId()));
+        addRelations(movie, movieUpdateRequest.getSubtitleLanguages(), movieUpdateRequest.getLanguages());
         movieRepository.save(movie);
     }
 

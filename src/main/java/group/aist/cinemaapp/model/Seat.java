@@ -1,6 +1,5 @@
 package group.aist.cinemaapp.model;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -9,7 +8,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
@@ -19,41 +17,43 @@ import static lombok.AccessLevel.PRIVATE;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "sectors")
+@Table(name = "seats")
 @Builder
 @FieldDefaults(level = PRIVATE)
-public class Sector {
+@NamedEntityGraph(
+        name = "seatWithRelations",
+        attributeNodes = {
+                @NamedAttributeNode("sector"),
+        }
+)
+public class Seat {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     Long id;
-    String name;
+    String row;
+    Long seat_number;
     Integer status;
-    @CreationTimestamp
-    LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    LocalDateTime updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "hall_id")
+    @JoinColumn(name = "sector_id")
     @ToString.Exclude
-    Hall hall;
+    Sector sector;
 
-    @OneToMany(mappedBy = "sector")
-    Set<Seat> seat;
+    @CreationTimestamp
+    LocalDateTime createdAt;
+    @UpdateTimestamp
+    LocalDateTime updatedAt;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Sector sector = (Sector) o;
-        return Objects.equals(getId(), sector.getId());
+        Seat seat = (Seat) o;
+        return Objects.equals(id, seat.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId());
+        return Objects.hashCode(id);
     }
 }
-
-

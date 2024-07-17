@@ -1,7 +1,8 @@
 package group.aist.cinemaapp.controller;
 
 import group.aist.cinemaapp.criteria.PageCriteria;
-import group.aist.cinemaapp.dto.request.MovieRequest;
+import group.aist.cinemaapp.dto.request.MovieCreateRequest;
+import group.aist.cinemaapp.dto.request.MovieUpdateRequest;
 import group.aist.cinemaapp.dto.response.MovieResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.service.MovieService;
@@ -26,13 +27,13 @@ public class MovieController {
     }
 
     @PostMapping
-    public void saveMovie(@RequestBody MovieRequest movieRequest) {
-        movieService.saveMovie(movieRequest);
+    public void saveMovie(@RequestBody MovieCreateRequest movieCreateRequest) {
+        movieService.saveMovie(movieCreateRequest);
     }
 
     @PutMapping("/{id}")
-    public void updateMovie(@PathVariable Long id, @RequestBody MovieRequest movieRequest) {
-        movieService.updateMovie(id, movieRequest);
+    public void updateMovie(@PathVariable Long id, @RequestBody MovieUpdateRequest movieUpdateRequest) {
+        movieService.updateMovie(id, movieUpdateRequest);
     }
 
     @PatchMapping("/{id}")
