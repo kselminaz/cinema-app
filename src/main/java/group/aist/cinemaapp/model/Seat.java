@@ -32,7 +32,7 @@ public class Seat {
     @GeneratedValue(strategy = IDENTITY)
     Long id;
     String row;
-    Long seat_number;
+    Long seatNumber;
     Integer status;
 
     @ManyToOne

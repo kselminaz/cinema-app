@@ -3,8 +3,6 @@ package group.aist.cinemaapp.service.impl;
 import group.aist.cinemaapp.dto.request.SeatCreateRequest;
 import group.aist.cinemaapp.dto.request.SeatUpdateRequest;
 import group.aist.cinemaapp.dto.response.SeatResponse;
-import group.aist.cinemaapp.enums.MovieSessionStatus;
-import group.aist.cinemaapp.enums.MovieStatus;
 import group.aist.cinemaapp.enums.SeatStatus;
 import group.aist.cinemaapp.mapper.SeatMapper;
 import group.aist.cinemaapp.model.Seat;
@@ -62,7 +60,7 @@ public class SeatServiceImpl implements SeatService {
 
         Seat seat = getSeatIfExist(id);
         ofNullable(seatUpdateRequest.getRow()).ifPresent(seat::setRow);
-        ofNullable(seatUpdateRequest.getSeat_number()).ifPresent(seat::setSeat_number);
+        ofNullable(seatUpdateRequest.getSeatNumber()).ifPresent(seat::setSeatNumber);
         ofNullable(seatUpdateRequest.getStatus()).ifPresent(status -> seat.setStatus(SeatStatus.valueOf(seatUpdateRequest.getStatus()).getId()));
         addRelations(seat, seatUpdateRequest.getSector());
         seatRepository.save(seat);

@@ -18,7 +18,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class SeatUpdateRequest {
 
     String row;
-    Long seat_number;
+    Long seatNumber;
     Long sector;
     String status;
 
