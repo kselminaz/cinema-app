@@ -14,7 +14,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface SeatMapper {
-
     @Mapping(target = "status", source = "status", qualifiedByName = "getById")
     @Mapping(target = "sectorName", source = "sector.name")
     SeatResponse toSeatResponse(Seat seat);

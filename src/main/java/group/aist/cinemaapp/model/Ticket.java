@@ -1,5 +1,11 @@
 package group.aist.cinemaapp.model;
 
+import java.math.BigDecimal;
+import java.util.Objects;
+
+
+
+
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -9,6 +15,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -17,43 +25,38 @@ import static lombok.AccessLevel.PRIVATE;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "seats")
+@Table(name ="tickets")
 @Builder
 @FieldDefaults(level = PRIVATE)
 @NamedEntityGraph(
-        name = "seatWithRelations",
+        name = "ticketWithRelations",
         attributeNodes = {
-                @NamedAttributeNode("sector"),
+                @NamedAttributeNode("seat"),
+                @NamedAttributeNode("session")
+
+
         }
 )
-public class Seat {
+public class Ticket {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     Long id;
-    String row;
-    Long seat_number;
-    Integer status;
-
-    @ManyToOne
-    @JoinColumn(name = "sector_id")
-    @ToString.Exclude
-    Sector sector;
+    BigDecimal price;
+    @ManyToOne(cascade = ALL)
+    @JoinColumn(name = "seat_id")
+    Seat seat;
+    @ManyToOne(cascade = ALL)
+    @JoinColumn(name = "session_id")
+    MovieSession session;
 
     @CreationTimestamp
     LocalDateTime createdAt;
+
     @UpdateTimestamp
     LocalDateTime updatedAt;
+    Integer status;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Seat seat = (Seat) o;
-        return Objects.equals(id, seat.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 }
+
+
+

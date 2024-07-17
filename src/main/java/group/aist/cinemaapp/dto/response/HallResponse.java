@@ -15,6 +15,5 @@ public class HallResponse {
      String name;
      Integer totalSeatsCount;
      HallStatus status;
-     LocalDateTime createdAt;
-     LocalDateTime updatedAt;
+
 }

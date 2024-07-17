@@ -11,8 +11,8 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface SectorRepository extends CrudRepository<Sector, Long> {
-    //    @EntityGraph(attributePaths = {"hall"})
-//    Optional<Sector> findById(Long id);
-//    @EntityGraph(attributePaths = {"hall"})
+        @EntityGraph(attributePaths = {"hall"})
+    Optional<Sector> findById(Long id);
+    @EntityGraph(attributePaths = {"hall"})
     Page<Sector> findAllByStatusIs(Pageable pageable, Integer status);
 }

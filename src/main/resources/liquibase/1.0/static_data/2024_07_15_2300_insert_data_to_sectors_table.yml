@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: Insert_data_to_sectors_table
-      author: Alsu Ismayilzade
+      author: Elvin Hashimov
       changes:
         - insert:
             tableName: sectors
