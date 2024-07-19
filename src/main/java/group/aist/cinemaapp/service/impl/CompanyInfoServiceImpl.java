@@ -14,7 +14,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.io.IOException;
+import java.util.Base64;
+import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -34,8 +39,9 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     }
 
     @Override
-    public void saveCompanyInfo(CompanyInfoCreateRequest request) {
+    public void saveCompanyInfo(CompanyInfoCreateRequest request, MultipartFile logo) {
         var entity = companyMapper.toEntity(request);
+        processLogo(logoFile).ifPresent(entity::setLogo);
         companyRepository.save(entity);
     }
 
@@ -68,5 +74,14 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
                 -> new ResponseStatusException(NOT_FOUND, String.format(
                 "Company with id [%d] was not found!", id
         )));
+
     }
+    @Override
+    public Optional<String> processLogo(MultipartFile logoFile) throws IOException {
+        if (logoFile != null && !logoFile.isEmpty()) {
+            // Logo dosyasını Base64 formatına dönüştür
+            String base64Logo = Base64.getEncoder().encodeToString(logoFile.getBytes());
+            return Optional.of(base64Logo);
+        }
+        return Optional.empty();
 }

@@ -40,4 +40,9 @@ public class CompanyInfoController {
     public void deleteCompanyById(@PathVariable Long id) {
         companyService.deleteCompany(id);
     }
+        @PutMapping("/{id}/logo")
+        public void updateCompanyLogo(@PathVariable Long id, @RequestPart("logo") MultipartFile logo) throws IOException {
+            companyService.updateCompanyLogo(id, logo);
+        }
+
 }

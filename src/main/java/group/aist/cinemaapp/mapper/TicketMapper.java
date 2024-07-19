@@ -1,6 +1,5 @@
 package group.aist.cinemaapp.mapper;
 
-import group.aist.cinemaapp.dto.request.TicketCreateRequest;
 import group.aist.cinemaapp.dto.response.TicketResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.enums.TicketStatus;
