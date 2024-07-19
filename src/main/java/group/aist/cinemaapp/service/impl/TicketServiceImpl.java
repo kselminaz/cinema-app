@@ -5,6 +5,7 @@ import group.aist.cinemaapp.dto.request.TicketCreateRequest;
 import group.aist.cinemaapp.dto.request.TicketUpdateRequest;
 import group.aist.cinemaapp.dto.response.TicketResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
+import group.aist.cinemaapp.enums.CurrencyType;
 import group.aist.cinemaapp.enums.TicketStatus;
 import group.aist.cinemaapp.mapper.TicketMapper;
 import group.aist.cinemaapp.model.Ticket;
@@ -20,7 +21,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 
-import static group.aist.cinemaapp.enums.TicketStatus.VISIBLE;
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -44,7 +44,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public PageableResponse<TicketResponse> getTickets(PageCriteria pageCriteria) {
-        var resultsPage = ticketRepository.findAllByStatusIs(PageRequest.of(pageCriteria.getPage(), pageCriteria.getCount()), VISIBLE.getId());
+        var resultsPage = ticketRepository.findAllByStatusIs(PageRequest.of(pageCriteria.getPage(), pageCriteria.getCount()), TicketStatus.ACTIVE.getId());
         return ticketMapper.toPageableResponse(resultsPage);
     }
 
@@ -52,7 +52,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public void saveTicket(TicketCreateRequest request) {
         var entity = ticketMapper.toEntity(request);
-        entity.setStatus(TicketStatus.VISIBLE.getId());
+        entity.setStatus(TicketStatus.ACTIVE.getId());
         addRelations(entity, request.getSeatId(),request.getSessionId());
         ticketRepository.save(entity);
     }
@@ -62,6 +62,7 @@ public class TicketServiceImpl implements TicketService {
     public void updateTicket(Long id, TicketUpdateRequest request) {
         var entity = fetchTicketIfExist(id);
         ofNullable(request.getPrice()).ifPresent(entity::setPrice);
+        ofNullable(request.getCurrency()).ifPresent(entity::setCurrency);
         ofNullable(request.getStatus()).ifPresent(status -> entity
                 .setStatus(TicketStatus.valueOf(request.getStatus()).getId()));
         addRelations(entity, request.getSeatId(), request.getSessionId());

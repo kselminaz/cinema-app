@@ -1,10 +1,5 @@
 package group.aist.cinemaapp.model;
 
-import java.math.BigDecimal;
-import java.util.Objects;
-
-
-import group.aist.cinemaapp.enums.CurrencyType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -15,8 +10,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static jakarta.persistence.CascadeType.ALL;
-import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -25,42 +18,51 @@ import static lombok.AccessLevel.PRIVATE;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name ="tickets")
+@Table(name = "user_tickets")
 @Builder
 @FieldDefaults(level = PRIVATE)
 @NamedEntityGraph(
-        name = "ticketWithRelations",
+        name = "userTicketWithRelations",
         attributeNodes = {
-                @NamedAttributeNode("seat"),
-                @NamedAttributeNode("session")
-
-
+                @NamedAttributeNode("user"),
+                @NamedAttributeNode("ticket"),
         }
 )
-public class Ticket {
+public class UserTicket {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     Long id;
 
-    BigDecimal price;
+    String ticketNumber;
 
-    @Enumerated(STRING)
-    CurrencyType currency;
     @ManyToOne(cascade = ALL)
-    @JoinColumn(name = "seat_id")
-    Seat seat;
+    @JoinColumn(name = "user_id")
+    User user;
+
     @ManyToOne(cascade = ALL)
-    @JoinColumn(name = "session_id")
-    MovieSession session;
+    @JoinColumn(name = "ticket_id")
+    Ticket ticket;
+
+    Integer status;
 
     @CreationTimestamp
     LocalDateTime createdAt;
 
     @UpdateTimestamp
     LocalDateTime updatedAt;
-    Integer status;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserTicket userTicket = (UserTicket) o;
+        return Objects.equals(getId(), userTicket.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
 
 }
-
-
-

@@ -13,7 +13,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {TicketStatus.class, Seat.class, MovieSessionMapper.class})
+@Mapper(componentModel = "spring", uses = {TicketStatus.class, Seat.class, MovieSessionMapper.class,SeatMapper.class})
 public interface TicketMapper {
 
     @Mapping(target = "seat", ignore = true)
@@ -22,7 +22,7 @@ public interface TicketMapper {
 
     @Mapping(target = "status", source = "status", qualifiedByName = "getById")
     @Mapping(target = "session", source = "session")
-    @Mapping(target = "seat", expression = "java(entity.getSeat().getSeat_number().toString())")
+    @Mapping(target = "seat", source = "seat")
     TicketResponse toResponse(Ticket entity);
 
     @Mapping(target = "data", source = "content", qualifiedByName = "getDataList")
