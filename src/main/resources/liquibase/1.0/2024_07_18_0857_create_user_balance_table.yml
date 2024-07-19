@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create_user_balance_table
+      author: Selminaz Kerimli
+      changes:
+        - createTable:
+            tableName: user_balance
+            columns:
+                  - column:
+                      name: id
+                      type: bigint
+                      autoIncrement: true
+                      constraints:
+                        primaryKey: true
+                        nullable: false
+                  - column:
+                      name: user_id
+                      type: bigint
+                      constraints:
+                        nullable: false
+                        foreignKeyName: fk_user_balance_user
+                        references: users(id)
+                  - column:
+                      name: currency
+                      type: varchar(10)
+                      constraints:
+                        nullable: false
+                  - column:
+                      name: amount
+                      type: number(10,2)
+                      defaultValue: 0
+      remarks: Table to store user balance

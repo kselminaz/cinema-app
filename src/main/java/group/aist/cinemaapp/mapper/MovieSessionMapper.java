@@ -46,7 +46,7 @@ public interface MovieSessionMapper {
     }
 
     @Named("getDataList")
-    default List<MovieSessionResponse> getLanguageList(List<MovieSession> data) {
+    default List<MovieSessionResponse> getMovieSessionList(List<MovieSession> data) {
         return data.stream().map(this::toResponse).toList();
     }
 
