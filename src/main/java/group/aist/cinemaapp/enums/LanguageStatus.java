@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 @Getter
 @RequiredArgsConstructor
-public enum LanguageStatus {
+public enum LanguageStatus{
 
     VISIBLE(1), INVISIBLE(2), DELETED(3);
 
