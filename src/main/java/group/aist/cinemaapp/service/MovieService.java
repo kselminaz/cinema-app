@@ -8,6 +8,7 @@ import group.aist.cinemaapp.dto.response.MovieResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.model.Movie;
 import group.aist.cinemaapp.model.MovieLanguage;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface MovieService {
 
@@ -15,7 +16,7 @@ public interface MovieService {
 
     PageableResponse<MovieResponse> getMovies(PageCriteria pageCriteria);
 
-    void saveMovie(MovieCreateRequest movieCreateRequest);
+    void saveMovie(MovieCreateRequest movieCreateRequest, MultipartFile file);
 
     void updateMovie(Long id, MovieUpdateRequest movieUpdateRequest);
 

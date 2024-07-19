@@ -27,6 +27,7 @@ public interface MovieMapper {
 
     @Mapping(target = "subtitleLanguages", ignore = true)
     @Mapping(target = "languages", ignore = true)
+    @Mapping(target = "image" , ignore = true)
     Movie toMovie(MovieCreateRequest movieCreateRequest);
 
     @Mapping(target = "movie", ignore = true)

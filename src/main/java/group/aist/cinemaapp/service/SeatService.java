@@ -25,4 +25,5 @@ public interface SeatService {
     Seat getSeatIfExist(Long id);
 
     void bookSeatById(Long id);
+
 }
