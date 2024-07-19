@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create_movie_sessions_table
+      author: Selminaz Kerimli
+      changes:
+        - createTable:
+            tableName: movie_sessions
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: movie_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie_sessions_movie
+                    references: movies(id)
+              - column:
+                  name: hall_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie_sessions_hall
+                    references: halls(id)
+              - column:
+                  name: language_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie_sessions_lang
+                    references: movie_languages(id)
+              - column:
+                  name: subtitle_language_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_movie_sessions_subtitle_lang
+                    references: languages(id)
+              - column:
+                  name: datetime
+                  type: timestamp
+              - column:
+                  name: status
+                  type: tinyint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValue: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValue: now()
+                  constraints:
+                    nullable: false
+
+            remarks: Table to store movie sessions

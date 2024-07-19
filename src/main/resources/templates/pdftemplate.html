@@ -1,0 +1,12 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<h3 style="text-align: center; color: green">
+</h3>
+<div>
+    <p th:text="'Movie: ' + ${pdfDto.getMovieName()} "></p>
+    <p th:text="'Movie Session Datetime: ' + ${pdfDto.getMovieDateTime()} "></p>
+    <p th:text="'Movie Hall: ' + ${pdfDto.getHall()} "></p>
+    <p th:text="'Ticket number: ' + ${pdfDto.getTicketNumber()} "></p>
+</div>
+</body>
+</html>

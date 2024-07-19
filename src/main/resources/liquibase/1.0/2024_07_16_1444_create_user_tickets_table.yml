@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create_user_tickets_table
+      author: Selminaz Kerimli
+      changes:
+        - createTable:
+            tableName: user_tickets
+            columns:
+                  - column:
+                      name: id
+                      type: bigint
+                      autoIncrement: true
+                      constraints:
+                        primaryKey: true
+                        nullable: false
+                  - column:
+                      name: user_id
+                      type: bigint
+                      constraints:
+                        nullable: false
+                        foreignKeyName: fk_user_tickets_user
+                        references: users(id)
+                  - column:
+                      name: ticket_id
+                      type: bigint
+                      constraints:
+                        nullable: false
+                        foreignKeyName: fk_user_tickets_ticket
+                        references: tickets(id)
+                  - column:
+                      name: ticket_number
+                      type: varchar(255)
+                      constraints:
+                        nullable: false
+                  - column:
+                      name: status
+                      type: tinyint
+                      constraints:
+                        nullable: false
+                  - column:
+                      name: created_at
+                      type: timestamp
+                      defaultValue: now()
+                      constraints:
+                        nullable: false
+                  - column:
+                      name: updated_at
+                      type: timestamp
+                      defaultValue: now()
+                      constraints:
+                        nullable: false
+
+      remarks: Table to store user tickets

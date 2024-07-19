@@ -1,0 +1,39 @@
+server:
+  port: 8086
+  error:
+    include-stacktrace: never
+    include-message: always
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:cinema_app}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  liquibase:
+    change-log: liquibase/changelog-master.yml
+    enabled: true
+    drop-first: false
+  jpa:
+    properties:
+      hibernate:
+    open-in-view: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kselminaz@gmail.com
+    password: rtpztuzcwdozqrdq
+    properties:
+      mail:
+        protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+uploads:
+  file:
+    path: src/main/resources/uploads/
