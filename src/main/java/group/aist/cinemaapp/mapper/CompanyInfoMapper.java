@@ -10,7 +10,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.data.domain.Page;
 
+import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public interface CompanyInfoMapper {
@@ -27,5 +29,11 @@ public interface CompanyInfoMapper {
     @Named("getCompanyInfoList")
     default List<CompanyInfoResponse> getCompanyInfoList(List<CompanyInfo> companyInfos) {
         return companyInfos.stream().map(this::toResponse).toList();
+    }
+
+    default String processLogo(String logo) {
+        return Optional.ofNullable(logo)
+                .map(l -> Base64.getEncoder().encodeToString(l.getBytes()))
+                .orElse(null);
     }
 }

@@ -1,6 +1,5 @@
 package group.aist.cinemaapp.service;
 import group.aist.cinemaapp.criteria.PageCriteria;
-import group.aist.cinemaapp.dto.request.TicketCreateRequest;
 import group.aist.cinemaapp.dto.request.TicketUpdateRequest;
 import group.aist.cinemaapp.dto.response.TicketResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;

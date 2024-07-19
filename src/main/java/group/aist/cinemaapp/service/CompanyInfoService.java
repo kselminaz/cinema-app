@@ -10,19 +10,23 @@ import group.aist.cinemaapp.dto.response.HallResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.model.CompanyInfo;
 import group.aist.cinemaapp.model.Hall;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 public interface CompanyInfoService {
 
     CompanyInfoResponse getCompanyById(Long id);
 
-    void saveCompanyInfo(CompanyInfoCreateRequest request);
+    void saveCompanyInfo(CompanyInfoCreateRequest request,MultipartFile logoFile) ;
 
-    void updateCompany(Long id, CompanyInfoUpdateRequest request);
+    void updateCompany(Long id, CompanyInfoUpdateRequest request,MultipartFile logoFile);
 
     void deleteCompany(Long id);
 
     PageableResponse<CompanyInfoResponse> getCompanies(PageCriteria pageCriteria);
 
     CompanyInfo fetchCompanyIfExist(Long id);
+    Optional<String> processLogo(MultipartFile logoFile)
 
 }
