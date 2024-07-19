@@ -34,3 +34,6 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
 
+uploads:
+  file:
+    path: src/main/resources/uploads/

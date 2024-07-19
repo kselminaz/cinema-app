@@ -23,14 +23,11 @@ public class MovieCreateRequest {
 
     String name;
     String description;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime releaseTime;
     Integer duration;
     Integer ageLimit;
-
     @NotEmpty(message = "At least one movie language is required")
     List<MovieLanguageRequest> languages;
-
     List<Long> subtitleLanguages;
 }

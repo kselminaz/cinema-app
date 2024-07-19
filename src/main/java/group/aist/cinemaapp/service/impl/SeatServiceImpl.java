@@ -54,10 +54,8 @@ public class SeatServiceImpl implements SeatService {
         seatRepository.save(seat);
     }
 
-
     @Override
     public void updateSeat(Long id, SeatUpdateRequest seatUpdateRequest) {
-
         Seat seat = getSeatIfExist(id);
         ofNullable(seatUpdateRequest.getRow()).ifPresent(seat::setRow);
         ofNullable(seatUpdateRequest.getSeatNumber()).ifPresent(seat::setSeatNumber);
@@ -85,7 +83,6 @@ public class SeatServiceImpl implements SeatService {
     @Override
     public Seat getSeatIfExist(Long id) {
         return seatRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Seat with id [" + id + "] is not found."));
-
     }
 
     @Override
@@ -93,7 +90,6 @@ public class SeatServiceImpl implements SeatService {
         Seat seat = getSeatIfExist(id);
         seat.setStatus(BOOKED.getId());
         seatRepository.save(seat);
-
     }
 
     private void addRelations(Seat seat, Long sectorId) {
