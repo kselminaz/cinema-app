@@ -27,7 +27,7 @@ public class MovieController {
         return movieService.getMovies(pageCriteria);
     }
 
-    @PostMapping
+    @PostMapping(consumes = "multipart/form-data")
     public void saveMovie(@RequestPart("data") MovieCreateRequest movieCreateRequest, @RequestPart("file") MultipartFile file) {
         movieService.saveMovie(movieCreateRequest,file);
     }

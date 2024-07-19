@@ -31,7 +31,7 @@ public interface UserTicketMapper {
     @Mapping(target = " hall", expression = "java(entity.getTicket().getSession().getHall().getName())")
     @Mapping(target = " sectorName", expression = "java(entity.getTicket().getSeat().getSector().getName())")
     @Mapping(target = " row", expression = "java(entity.getTicket().getSeat().getRow())")
-    @Mapping(target = " seatNumber", expression = "java(entity.getTicket().getSeat().getSeat_number())")
+    @Mapping(target = " seatNumber", expression = "java(entity.getTicket().getSeat().getSeatNumber())")
     UserTicketPdfDto toPDFResponse(UserTicket entity, String qrcode);
 
     @Named("getById")

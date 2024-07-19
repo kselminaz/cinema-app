@@ -15,19 +15,13 @@ import group.aist.cinemaapp.model.MovieLanguage;
 import group.aist.cinemaapp.repository.MovieRepository;
 import group.aist.cinemaapp.service.LanguageService;
 import group.aist.cinemaapp.service.MovieService;
+import group.aist.cinemaapp.util.ImageSaveUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +42,7 @@ public class MovieServiceImpl implements MovieService {
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
     private final LanguageService languageService;
+    private final ImageSaveUtil imageSaveUtil;
 
     @Override
     public MovieResponse getMovieById(Long id) {
@@ -69,7 +64,7 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = movieMapper.toMovie(movieCreateRequest);
         movie.setStatus(MovieStatus.VISIBLE.getId());
         try {
-            movie.setImage(saveImage(file));
+            movie.setImage(imageSaveUtil.saveImage(file,"movies"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -79,10 +74,8 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void updateMovie(Long id, MovieUpdateRequest movieUpdateRequest) {
-
         Movie movie = fetchMovieIfExist(id);
         ofNullable(movieUpdateRequest.getName()).ifPresent(movie::setName);
-        ofNullable(movieUpdateRequest.getImage()).ifPresent(movie::setImage);
         ofNullable(movieUpdateRequest.getDescription()).ifPresent(movie::setDescription);
         ofNullable(movieUpdateRequest.getReleaseTime()).ifPresent(movie::setReleaseTime);
         ofNullable(movieUpdateRequest.getDuration()).ifPresent(movie::setDuration);
@@ -134,26 +127,4 @@ public class MovieServiceImpl implements MovieService {
             movie.setLanguages(languages);
         }
     }
-
-    public static String saveImage(MultipartFile multipartFile)
-            throws IOException {
-        Path uploadPath = Paths.get("src/main/resources/docs");
-        String fileName = multipartFile.getOriginalFilename();
-        Path filePath;
-
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
-        }
-        String fileCode = RandomStringUtils.randomAlphanumeric(8);
-
-        try (InputStream inputStream = multipartFile.getInputStream()) {
-             filePath = uploadPath.resolve(fileCode + "-" + fileName);
-            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException ioe) {
-            throw new IOException("Could not save file: " + fileName, ioe);
-        }
-
-        return filePath.toString();
-    }
-
 }
