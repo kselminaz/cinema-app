@@ -6,9 +6,11 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/cinema_app
+    url: jdbc:postgresql://localhost:5432/cinema-app
     username: postgres
-    password: postgres
+    password: 1928
+
+
   liquibase:
     change-log: liquibase/changelog-master.yml
     enabled: true
@@ -17,6 +19,23 @@ spring:
     properties:
       hibernate:
     open-in-view: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kselminaz@gmail.com
+    password: rtpztuzcwdozqrdq
+    properties:
+      mail:
+        protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+uploads:
+  file:
+    path: src/main/resources/uploads/

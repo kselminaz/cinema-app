@@ -20,13 +20,13 @@ public interface CompanyInfoService {
 
     void saveCompanyInfo(CompanyInfoCreateRequest request,MultipartFile logoFile) ;
 
-    void updateCompany(Long id, CompanyInfoUpdateRequest request,MultipartFile logoFile);
+    void updateCompany(Long id, CompanyInfoUpdateRequest request);
 
     void deleteCompany(Long id);
 
     PageableResponse<CompanyInfoResponse> getCompanies(PageCriteria pageCriteria);
 
     CompanyInfo fetchCompanyIfExist(Long id);
-    Optional<String> processLogo(MultipartFile logoFile)
+
 
 }

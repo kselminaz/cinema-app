@@ -20,12 +20,9 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE)
 public class MovieUpdateRequest {
     String name;
-    String image;
     String description;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime releaseTime;
-
     Integer duration;
     Integer ageLimit;
     List<MovieLanguageRequest> languages;

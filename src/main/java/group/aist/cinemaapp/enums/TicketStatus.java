@@ -9,7 +9,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public enum TicketStatus {
 
-    VISIBLE(1), INVISIBLE(2), DELETED(3);
+    ACTIVE(1), INACTIVE(2), SOLD(3),DELETED(4);
 
     private final int id;
 

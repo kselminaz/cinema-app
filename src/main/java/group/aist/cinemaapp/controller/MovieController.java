@@ -8,6 +8,7 @@ import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,9 +27,9 @@ public class MovieController {
         return movieService.getMovies(pageCriteria);
     }
 
-    @PostMapping
-    public void saveMovie(@RequestBody MovieCreateRequest movieCreateRequest) {
-        movieService.saveMovie(movieCreateRequest);
+    @PostMapping(consumes = "multipart/form-data")
+    public void saveMovie(@RequestPart("data") MovieCreateRequest movieCreateRequest, @RequestPart("file") MultipartFile file) {
+        movieService.saveMovie(movieCreateRequest,file);
     }
 
     @PutMapping("/{id}")

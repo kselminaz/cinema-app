@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.service.impl;
 
+import group.aist.cinemaapp.annotation.Log;
 import group.aist.cinemaapp.criteria.MovieSessionSortingCriteria;
 import group.aist.cinemaapp.criteria.PageCriteria;
 import group.aist.cinemaapp.dto.request.MovieSessionCreateRequest;
@@ -30,6 +31,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
+@Log
 public class MovieSessionServiceImpl implements MovieSessionService {
 
     private final MovieSessionRepository movieSessionRepository;

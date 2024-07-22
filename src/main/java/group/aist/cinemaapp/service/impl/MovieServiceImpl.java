@@ -8,7 +8,6 @@ import group.aist.cinemaapp.dto.request.MovieUpdateRequest;
 import group.aist.cinemaapp.dto.response.MovieResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.enums.MovieStatus;
-import group.aist.cinemaapp.enums.SeatStatus;
 import group.aist.cinemaapp.mapper.MovieMapper;
 import group.aist.cinemaapp.model.Language;
 import group.aist.cinemaapp.model.Movie;
@@ -16,11 +15,13 @@ import group.aist.cinemaapp.model.MovieLanguage;
 import group.aist.cinemaapp.repository.MovieRepository;
 import group.aist.cinemaapp.service.LanguageService;
 import group.aist.cinemaapp.service.MovieService;
+import group.aist.cinemaapp.util.ImageSaveUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +42,7 @@ public class MovieServiceImpl implements MovieService {
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
     private final LanguageService languageService;
+    private final ImageSaveUtil imageSaveUtil;
 
     @Override
     public MovieResponse getMovieById(Long id) {
@@ -58,19 +60,22 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void saveMovie(MovieCreateRequest movieCreateRequest) {
+    public void saveMovie(MovieCreateRequest movieCreateRequest, MultipartFile file) {
         Movie movie = movieMapper.toMovie(movieCreateRequest);
         movie.setStatus(MovieStatus.VISIBLE.getId());
+        try {
+            movie.setImage(imageSaveUtil.saveImage(file,"movies"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         addRelations(movie, movieCreateRequest.getSubtitleLanguages(), movieCreateRequest.getLanguages());
         movieRepository.save(movie);
     }
 
     @Override
     public void updateMovie(Long id, MovieUpdateRequest movieUpdateRequest) {
-
         Movie movie = fetchMovieIfExist(id);
         ofNullable(movieUpdateRequest.getName()).ifPresent(movie::setName);
-        ofNullable(movieUpdateRequest.getImage()).ifPresent(movie::setImage);
         ofNullable(movieUpdateRequest.getDescription()).ifPresent(movie::setDescription);
         ofNullable(movieUpdateRequest.getReleaseTime()).ifPresent(movie::setReleaseTime);
         ofNullable(movieUpdateRequest.getDuration()).ifPresent(movie::setDuration);
@@ -122,5 +127,4 @@ public class MovieServiceImpl implements MovieService {
             movie.setLanguages(languages);
         }
     }
-
 }

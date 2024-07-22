@@ -4,8 +4,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 
-
-
+import group.aist.cinemaapp.enums.CurrencyType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
@@ -41,7 +41,11 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     Long id;
+
     BigDecimal price;
+
+    @Enumerated(STRING)
+    CurrencyType currency;
     @ManyToOne(cascade = ALL)
     @JoinColumn(name = "seat_id")
     Seat seat;

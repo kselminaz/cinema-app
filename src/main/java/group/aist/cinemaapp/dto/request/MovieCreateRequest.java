@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,16 +22,12 @@ import static lombok.AccessLevel.PRIVATE;
 public class MovieCreateRequest {
 
     String name;
-    String image;
     String description;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime releaseTime;
     Integer duration;
     Integer ageLimit;
-
     @NotEmpty(message = "At least one movie language is required")
     List<MovieLanguageRequest> languages;
-
     List<Long> subtitleLanguages;
 }

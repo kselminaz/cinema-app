@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.dto.response;
 
+import group.aist.cinemaapp.enums.CurrencyType;
 import group.aist.cinemaapp.enums.TicketStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -20,10 +20,9 @@ import static lombok.AccessLevel.PRIVATE;
 public class TicketResponse {
 
     Long id;
-    String seat;
+    SeatResponse seat;
     BigDecimal price;
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
+    CurrencyType currency;
     TicketStatus status;
     MovieSessionResponse session;
 }

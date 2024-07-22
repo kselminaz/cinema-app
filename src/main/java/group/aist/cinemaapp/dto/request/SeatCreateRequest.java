@@ -21,7 +21,7 @@ public class SeatCreateRequest {
     String row;
 
     @NotNull(message = "Seat number is required")
-    Long seat_number;
+    Long seatNumber;
 
     @NotNull(message = "Seat number is required")
     Long sector;

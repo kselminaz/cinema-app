@@ -5,11 +5,14 @@ import group.aist.cinemaapp.dto.request.CompanyInfoCreateRequest;
 import group.aist.cinemaapp.dto.request.CompanyInfoUpdateRequest;
 import group.aist.cinemaapp.dto.response.CompanyInfoResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
+import group.aist.cinemaapp.enums.MovieStatus;
 import group.aist.cinemaapp.mapper.CompanyInfoMapper;
 import group.aist.cinemaapp.model.CompanyInfo;
 
+import group.aist.cinemaapp.model.Movie;
 import group.aist.cinemaapp.repository.CompanyInfoRepository;
 import group.aist.cinemaapp.service.CompanyInfoService;
+import group.aist.cinemaapp.util.ImageSaveUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -29,8 +32,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class CompanyInfoServiceImpl implements CompanyInfoService {
 
     private final CompanyInfoRepository companyRepository;
-
     private final CompanyInfoMapper companyMapper;
+    private final ImageSaveUtil imageSaveUtil;
 
     @Override
     public CompanyInfoResponse getCompanyById(Long id) {
@@ -40,9 +43,13 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
     @Override
     public void saveCompanyInfo(CompanyInfoCreateRequest request, MultipartFile logo) {
-        var entity = companyMapper.toEntity(request);
-        processLogo(logoFile).ifPresent(entity::setLogo);
-        companyRepository.save(entity);
+        CompanyInfo companyInfo = companyMapper.toEntity(request);
+        try {
+            companyInfo.setLogo(imageSaveUtil.saveImage(logo, "logo"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        companyRepository.save(companyInfo);
     }
 
     @Override
@@ -57,7 +64,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
     @Override
     public void deleteCompany(Long id) {
-         companyRepository.deleteById(id);
+        companyRepository.deleteById(id);
 
 
     }
@@ -65,8 +72,8 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     @Override
     public PageableResponse<CompanyInfoResponse> getCompanies(PageCriteria pageCriteria) {
         var resultsPage = companyRepository.findAll(PageRequest.of(pageCriteria.getPage(), pageCriteria.getCount(), Sort.by(Sort.Direction.ASC, "title")));
-            return companyMapper.toPageableResponse(resultsPage);
-        }
+        return companyMapper.toPageableResponse(resultsPage);
+    }
 
     @Override
     public CompanyInfo fetchCompanyIfExist(Long id) {
@@ -76,12 +83,4 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         )));
 
     }
-    @Override
-    public Optional<String> processLogo(MultipartFile logoFile) throws IOException {
-        if (logoFile != null && !logoFile.isEmpty()) {
-            // Logo dosyasını Base64 formatına dönüştür
-            String base64Logo = Base64.getEncoder().encodeToString(logoFile.getBytes());
-            return Optional.of(base64Logo);
-        }
-        return Optional.empty();
 }

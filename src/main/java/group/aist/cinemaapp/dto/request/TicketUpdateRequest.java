@@ -1,6 +1,7 @@
 
 package group.aist.cinemaapp.dto.request;
 
+import group.aist.cinemaapp.enums.CurrencyType;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +24,8 @@ public class TicketUpdateRequest {
     Long sessionId;
     @Positive(message = "Price must be positive")
     BigDecimal price;
+
+    CurrencyType currency;
 
     String status;
 }

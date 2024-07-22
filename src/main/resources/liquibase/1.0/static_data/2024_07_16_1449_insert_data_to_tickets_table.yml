@@ -1,35 +1,28 @@
 databaseChangeLog:
   - changeSet:
       id: Insert_data_to_tickets_table
-      author: Elvin Hashimov
+      author: Selminaz Kerimli
       changes:
         - insert:
             tableName: tickets
             columns:
               - column:
-                  name: price
-                  value: 10
+                  name: id
+                  value: 1
               - column:
                   name: seat_id
-                  value: 6
+                  value: 1
               - column:
                   name: session_id
-                  value: 2
+                  value: 1
+              - column:
+                  name: price
+                  value: 50
+              - column:
+                  name: currency
+                  value: AZN
               - column:
                   name: status
                   value: 1
-        - insert:
-            tableName: tickets
-            columns:
-              - column:
-                  name: price
-                  value: 15
-              - column:
-                  name: seat_id
-                  value: 7
-              - column:
-                  name: session_id
-                  value: 2
-              - column:
-                  name: status
-                  value: 1
+
+
