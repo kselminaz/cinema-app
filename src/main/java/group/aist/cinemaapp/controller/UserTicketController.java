@@ -8,6 +8,7 @@ import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.service.UserTicketService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -20,18 +21,23 @@ public class UserTicketController {
 
     private final UserTicketService userTicketService;
 
+
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('client_user')")
     public UserTicketResponse getUserTicketById(@PathVariable Long id) {
 
         return userTicketService.getUserTicketById(id);
     }
 
+
     @GetMapping
+    @PreAuthorize("hasRole('client_user')")
     public PageableResponse<UserTicketResponse> getUserTickets(@RequestParam Long userId,PageCriteria pageCriteria) {
         return userTicketService.getUserTickets(userId,pageCriteria);
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('client_user')")
     @ResponseStatus(CREATED)
     public String saveUserTicket(@Valid @RequestBody UserTicketCreateRequest request) {
 
@@ -45,6 +51,7 @@ public class UserTicketController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('client_user')")
     @ResponseStatus(NO_CONTENT)
     public void updateUserTicket(@PathVariable Long id, @Valid @RequestBody UserTicketUpdateRequest request) {
 
@@ -52,6 +59,7 @@ public class UserTicketController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('client_user')")
     @ResponseStatus(NO_CONTENT)
     public void updateUserTicketWithStatus(@PathVariable Long id, @RequestParam String status) {
 

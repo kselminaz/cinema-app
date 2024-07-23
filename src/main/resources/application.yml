@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8086
   error:
     include-stacktrace: never
     include-message: always
@@ -30,6 +30,15 @@ spring:
           starttls:
             enable: true
             required: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+        issuer-uri: http://localhost:8080/realms/team2
+        jwt-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
