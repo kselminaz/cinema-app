@@ -11,7 +11,7 @@ public interface UserTicketService {
 
     UserTicketResponse getUserTicketById(Long id);
 
-    PageableResponse<UserTicketResponse> getUserTickets(Long userId, PageCriteria pageCriteria);
+    PageableResponse<UserTicketResponse> getUserTickets(PageCriteria pageCriteria);
 
     String saveUserTicket(UserTicketCreateRequest request);
 

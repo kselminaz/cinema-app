@@ -1,41 +1,56 @@
 package group.aist.cinemaapp.security;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
 @Configuration
-@EnableMethodSecurity(securedEnabled=true, prePostEnabled=true)
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurity {
+
+    private final JwtAuthConverter jwtAuthConverter;
+
+    @Value("${keycloak.base-url}/realms/${keycloak.realm}")
+    private String issuer;
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
-        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter());
-        http
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/api/create-user","/api/login","/api/token","/swagger-ui/**","/v3/api-docs/**","/api/refresh-token")
-                )
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/create-user","/api/login","/api/token","/swagger-ui/**","/v3/api-docs/**","/api/refresh-token").permitAll()
+        //configurations
+        http.csrf(AbstractHttpConfigurer::disable);
+        http.cors(AbstractHttpConfigurer::disable);
+        http.sessionManagement(session -> session.sessionCreationPolicy(STATELESS));
+
+        http.authorizeHttpRequests((auth) -> auth
+                        .requestMatchers(
+                                "/api/create-user",
+                                "/api/login", "/api/token",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter))
+                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter))
                 );
+
         return http.build();
     }
+
     @Bean
     public JwtDecoder jwtDecoder() {
-        String issuerUri = "https://auth.md7.info/auth/realms/team2";
-        return NimbusJwtDecoder.withIssuerLocation(issuerUri).build();
+
+        return NimbusJwtDecoder.withIssuerLocation(issuer).build();
     }
 }
 

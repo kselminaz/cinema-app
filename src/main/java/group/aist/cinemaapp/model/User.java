@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,13 +27,17 @@ import static lombok.AccessLevel.PRIVATE;
 )
 public class User {
     @Id
-    Long id;
+    String id;
+
+    String username;
 
     String fullName;
 
     String phone;
 
     String mail;
+
+    LocalDate dob;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     @ToString.Exclude

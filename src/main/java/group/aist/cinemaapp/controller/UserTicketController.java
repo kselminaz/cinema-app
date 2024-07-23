@@ -22,8 +22,9 @@ public class UserTicketController {
     private final UserTicketService userTicketService;
 
 
+
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('client_user')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserTicketResponse getUserTicketById(@PathVariable Long id) {
 
         return userTicketService.getUserTicketById(id);
@@ -31,13 +32,13 @@ public class UserTicketController {
 
 
     @GetMapping
-    @PreAuthorize("hasRole('client_user')")
-    public PageableResponse<UserTicketResponse> getUserTickets(@RequestParam Long userId,PageCriteria pageCriteria) {
-        return userTicketService.getUserTickets(userId,pageCriteria);
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public PageableResponse<UserTicketResponse> getUserTickets(PageCriteria pageCriteria) {
+        return userTicketService.getUserTickets(pageCriteria);
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('client_user')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(CREATED)
     public String saveUserTicket(@Valid @RequestBody UserTicketCreateRequest request) {
 
@@ -45,13 +46,14 @@ public class UserTicketController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(NO_CONTENT)
     public void deleteUserTicket(@PathVariable Long id) {
         userTicketService.deleteUserTicket(id);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('client_user')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(NO_CONTENT)
     public void updateUserTicket(@PathVariable Long id, @Valid @RequestBody UserTicketUpdateRequest request) {
 
@@ -59,7 +61,7 @@ public class UserTicketController {
     }
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasRole('client_user')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(NO_CONTENT)
     public void updateUserTicketWithStatus(@PathVariable Long id, @RequestParam String status) {
 

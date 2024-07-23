@@ -8,6 +8,7 @@ import group.aist.cinemaapp.dto.response.MovieSessionResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.service.MovieSessionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +18,7 @@ public class MovieSessionController {
 
     private final MovieSessionService movieSessionService;
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public MovieSessionResponse getMovieSessionById(@PathVariable Long id) {
         return movieSessionService.getMovieSessionById(id);

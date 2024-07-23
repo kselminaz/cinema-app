@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserBalanceRepository extends JpaRepository<UserBalance, Long> {
 
-   UserBalance findByUserIdAndCurrency(Long userId, CurrencyType currency);
+   UserBalance findByUserIdAndCurrency(String userId, CurrencyType currency);
 
 }
