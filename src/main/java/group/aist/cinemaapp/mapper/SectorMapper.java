@@ -13,11 +13,10 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {SectorStatus.class})
-
 public interface SectorMapper {
     Sector toEntity(SectorCreateRequest request);
 
-    @Mapping(target = "status", source = "status", qualifiedByName = "sectorById")
+    @Mapping(target = "status", source = "status", qualifiedByName = "getById")
     SectorResponse toResponse(Sector entity);
 
     @Mapping(target = "data", source = "content", qualifiedByName = "getSectorList")
@@ -26,8 +25,8 @@ public interface SectorMapper {
     @Mapping(target = "totalElements", source = "totalElements")
     PageableResponse<SectorResponse> toPageableResponse(Page<Sector> page);
 
-    @Named("sectorById")
-    default SectorStatus sectorById(Integer id) {
+    @Named("getById")
+    default SectorStatus getById(Integer id) {
         return SectorStatus.getSectorStatusById(id);
     }
 

@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: Create_tickets_table
+      id: Create_company_info_table
       author: Elvin Hashimov
       changes:
         - createTable:
-            tableName: tickets
+            tableName: company_info
             columns:
               - column:
                   name: id
@@ -14,32 +14,25 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: price
-                  type: decimal(10,2)
+                  name: name
+                  type: varchar(255)
                   constraints:
                     nullable: false
               - column:
-                  name: seat_id
-                  type: bigint
+                  name: about_text
+                  type: text
                   constraints:
-                    nullable: false
-                    foreignKeyName: fk_ticket_seat
-                    references: seats(id)
+                    nullable: true
               - column:
-                  name: session_id
-                  type: bigint
+                  name: logo
+                  type: varchar(255)
                   constraints:
-                    nullable: false
-                    foreignKeyName: fk_ticket_session
-                    references: movie_sessions(id)
+                    nullable: true
               - column:
-                  name: status
-                  type: tinyint
+                  name: costumers_information_text
+                  type: text
                   constraints:
-                    nullable: false
-              - column:
-                  name: currency
-                  type: varchar(10)
+                    nullable: true
               - column:
                   name: created_at
                   type: timestamp
@@ -52,5 +45,4 @@ databaseChangeLog:
                   defaultValue: now()
                   constraints:
                     nullable: false
-
-            remarks: Table to store tickets
+remarks: Table to store company info

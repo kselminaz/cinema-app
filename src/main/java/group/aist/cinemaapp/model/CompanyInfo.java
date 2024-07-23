@@ -7,9 +7,10 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Set;
+
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
@@ -19,40 +20,27 @@ import static lombok.AccessLevel.PRIVATE;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "sectors")
+@Table(name = "company_info")
 @Builder
 @FieldDefaults(level = PRIVATE)
-@NamedEntityGraph(name = "sectorWithRelations",
-        attributeNodes = {
-                @NamedAttributeNode("hall"),
-                @NamedAttributeNode("seat")
-        }
-)
-public class Sector {
+public class CompanyInfo {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     Long id;
     String name;
-    Integer status;
+    String aboutText;
+    String logo;
+    String costumersInformationText;
     @CreationTimestamp
     LocalDateTime createdAt;
-
     @UpdateTimestamp
     LocalDateTime updatedAt;
-
-    @ManyToOne
-    @JoinColumn(name = "hall_id")
-    @ToString.Exclude
-    Hall hall;
-
-    @OneToMany(mappedBy = "sector")
-    Set<Seat> seat;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Sector sector)) return false;
-        return Objects.equals(getId(), sector.getId());
+        if (!(o instanceof CompanyInfo that)) return false;
+        return getId().equals(that.getId());
     }
 
     @Override
