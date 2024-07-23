@@ -57,7 +57,6 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         var entity = fetchCompanyIfExist(id);
         ofNullable(request.getName()).ifPresent(entity::setName);
         ofNullable(request.getAboutText()).ifPresent(entity::setAboutText);
-        ofNullable(request.getLogo()).ifPresent(entity::setLogo);
         ofNullable(request.getCostumersInformationText()).ifPresent(entity::setCostumersInformationText);
         companyRepository.save(entity);
     }

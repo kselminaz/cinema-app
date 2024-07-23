@@ -14,8 +14,6 @@ public class CompanyInfoUpdateRequest {
     String name;
     @NotBlank(message = "Text is required")
     String aboutText;
-    @NotBlank(message = "Logo is required")
-    String logo;
     @NotBlank(message = "Costumers information is required")
     String costumersInformationText;
 }

@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/cinema-app
+    url: jdbc:postgresql://localhost:5432/cinema_app
     username: postgres
     password: 1928
 
