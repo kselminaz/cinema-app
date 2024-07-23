@@ -10,4 +10,5 @@ public interface AuthService {
     String getAccessToken();
     String createUser(UserRegisterRequest request);
     TokenResponse getUserAccessToken(UserLoginRequest request);
+    TokenResponse getAccessTokenByRefreshToken(String refreshToken);
 }

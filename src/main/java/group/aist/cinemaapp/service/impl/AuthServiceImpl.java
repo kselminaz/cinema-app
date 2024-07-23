@@ -13,6 +13,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +86,15 @@ public class AuthServiceImpl implements AuthService {
         userPayload.put("email", request.getEmail());
         userPayload.put("credentials", List.of(Map.of("type", "password", "value", request.getPassword(), "temporary", false)));
 
+        Map<String, List<String>> attributes = new HashMap<>();
+        attributes.put("phone", List.of(request.getPhone()));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String dobFormatted = request.getDob().format(formatter);
+        attributes.put("dob", List.of(dobFormatted));
+
+        userPayload.put("attributes", attributes);
+
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(userPayload, headers);
         try {
             restTemplate.postForEntity(createUserUrl, requestEntity, Void.class);
@@ -131,5 +143,33 @@ public class AuthServiceImpl implements AuthService {
         }
         return null;
     }
+    @Override
+    public TokenResponse getAccessTokenByRefreshToken(String refreshToken) {
+        String tokenUrl = keycloakBaseUrl + "/realms/" + realm + "/protocol/openid-connect/token";
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("grant_type", "refresh_token");
+        body.add("refresh_token", refreshToken);
+        body.add("client_id", clientId);
+        body.add("client_secret", clientSecret);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
+
+        try {
+            ResponseEntity<Map> response = restTemplate.postForEntity(tokenUrl, requestEntity, Map.class);
+            if (response.getStatusCode().is2xxSuccessful()) {
+                Map<String, String> responseBody = response.getBody();
+                if (responseBody != null) {
+                    return new TokenResponse(responseBody.get("access_token"), responseBody.get("refresh_token"));
+                }
+            }
+            log.error("Failed to obtain access token using refresh token. Status code: " + response.getStatusCode());
+        } catch (Exception e) {
+            log.error("Exception occurred while obtaining access token using refresh token: " + e.getMessage());
+        }
+        return null;
+    }
+
 
 }

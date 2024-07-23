@@ -22,10 +22,10 @@ public class WebSecurity {
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter());
         http
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/api/create-user","/api/login","/api/token","/swagger-ui/**","/v3/api-docs/**")
+                        .ignoringRequestMatchers("/api/create-user","/api/login","/api/token","/swagger-ui/**","/v3/api-docs/**","/api/refresh-token")
                 )
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/create-user","/api/login","/api/token","/swagger-ui/**","/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/create-user","/api/login","/api/token","/swagger-ui/**","/v3/api-docs/**","/api/refresh-token").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter))
