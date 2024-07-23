@@ -60,6 +60,11 @@ dependencies {
     //flying-saucer-pdf
     implementation 'org.xhtmlrenderer:flying-saucer-pdf:9.5.1'
 
+    //security
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
 }
 
 tasks.named('test') {

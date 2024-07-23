@@ -64,7 +64,7 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = movieMapper.toMovie(movieCreateRequest);
         movie.setStatus(MovieStatus.VISIBLE.getId());
         try {
-            movie.setImage(imageSaveUtil.saveImage(file,"movies"));
+            movie.setImage(imageSaveUtil.saveImage(movie.getName(),file,"movies"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

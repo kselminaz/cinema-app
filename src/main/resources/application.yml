@@ -1,5 +1,5 @@
 server:
-  port: 8086
+  port: 8080
   error:
     include-stacktrace: never
     include-message: always
@@ -8,9 +8,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/cinema_app
     username: postgres
-    password: 1928
-
-
+    password: postgres
   liquibase:
     change-log: liquibase/changelog-master.yml
     enabled: true
@@ -39,3 +37,15 @@ springdoc:
 uploads:
   file:
     path: src/main/resources/uploads/
+
+keycloak:
+  base-url: https://auth.md7.info/auth
+  realm: team2
+  client-id: cinema_client
+  client-secret: RASY3CLoZYQ0NOlBTaRJ5ZvvfGLVHhNZ
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
