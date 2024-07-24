@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 
 @Entity
@@ -30,6 +31,7 @@ import static lombok.AccessLevel.PRIVATE;
 )
 public class UserBalance {
     @Id
+    @GeneratedValue(strategy = IDENTITY)
     Long id;
 
     @Enumerated(STRING)

@@ -45,7 +45,7 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
     public void saveCompanyInfo(CompanyInfoCreateRequest request, MultipartFile logo) {
         CompanyInfo companyInfo = companyMapper.toEntity(request);
         try {
-            companyInfo.setLogo(imageSaveUtil.saveImage(logo, "logo"));
+            companyInfo.setLogo(imageSaveUtil.saveImage("logo", logo,"/uploads"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

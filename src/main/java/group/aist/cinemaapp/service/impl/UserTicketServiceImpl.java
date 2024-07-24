@@ -15,6 +15,7 @@ import group.aist.cinemaapp.mapper.UserTicketMapper;
 import group.aist.cinemaapp.model.UserTicket;
 import group.aist.cinemaapp.repository.UserBalanceRepository;
 import group.aist.cinemaapp.repository.UserTicketRepository;
+import group.aist.cinemaapp.service.CompanyInfoService;
 import group.aist.cinemaapp.service.TicketService;
 import group.aist.cinemaapp.service.UserService;
 import group.aist.cinemaapp.service.UserTicketService;
@@ -24,6 +25,8 @@ import group.aist.cinemaapp.util.QrCodeUtil;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -54,6 +57,7 @@ public class UserTicketServiceImpl implements UserTicketService {
     private final UserTicketMapper userTicketMapper;
 
     private final MailSenderUtil mailSenderUtil;
+    private final CompanyInfoService companyInfoService;
 
     @Override
     @Transactional
@@ -66,8 +70,9 @@ public class UserTicketServiceImpl implements UserTicketService {
 
     @Override
     @Transactional
-    public PageableResponse<UserTicketResponse> getUserTickets(Long userId, PageCriteria pageCriteria) {
-
+    public PageableResponse<UserTicketResponse> getUserTickets(PageCriteria pageCriteria) {
+        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId=jwt.getSubject();
         var resultsPage = userTicketRepository.findAllByUserIdAndStatusIs(PageRequest.of(pageCriteria.getPage(), pageCriteria.getCount()), userId, ACTIVE.getId());
         return userTicketMapper.toPageableResponse(resultsPage);
     }
@@ -78,7 +83,10 @@ public class UserTicketServiceImpl implements UserTicketService {
 
         String qrString = null;
 
-        var user = userService.getUserById(request.getUserId());
+        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId=jwt.getSubject();
+
+        var user = userService.getUserById(userId);
 
 
         for (var ticketId : request.getTicketId()) {
@@ -112,7 +120,9 @@ public class UserTicketServiceImpl implements UserTicketService {
 
                     qrString = Base64.getEncoder().encodeToString(qrcode);
 
-                    var pdfdto=userTicketMapper.toPDFResponse(userTicket,qrString);
+                    var companyInfo=companyInfoService.getCompanyById(1L);
+
+                    var pdfdto=userTicketMapper.toPDFResponse(userTicket,companyInfo,qrString);
 
                     System.out.println(pdfdto);
 

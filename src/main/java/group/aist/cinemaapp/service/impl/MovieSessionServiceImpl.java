@@ -40,10 +40,10 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     private final MovieService movieService;
     private final SortingUtil sortingUtil;
 
-
     @Override
     @Transactional
     public MovieSessionResponse getMovieSessionById(Long id) {
+
         var entity = fetchMovieSessionIfExist(id);
         return movieSessionMapper.toResponse(entity);
 

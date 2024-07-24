@@ -15,7 +15,7 @@ public interface UserTicketRepository extends JpaRepository<UserTicket, Long> {
     Page<UserTicket> findAllByStatusIs(Pageable pageable, Integer status);
 
     @EntityGraph(value = "userTicketWithRelations")
-    Page<UserTicket> findAllByUserIdAndStatusIs(Pageable pageable, Long userId,Integer status);
+    Page<UserTicket> findAllByUserIdAndStatusIs(Pageable pageable, String userId,Integer status);
 
     @Override
     @EntityGraph(value = "userTicketWithRelations")
