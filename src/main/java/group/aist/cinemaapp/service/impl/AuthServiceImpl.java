@@ -99,8 +99,12 @@ public class AuthServiceImpl implements AuthService {
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(userPayload, headers);
         try {
-            var response=restTemplate.postForEntity(createUserUrl, requestEntity, Void.class);
-            userService.AddKeycloakUserToDB(UUID.randomUUID().toString(), request);
+            ResponseEntity<Void> response = restTemplate.postForEntity(createUserUrl, requestEntity, Void.class);
+            if(response.getStatusCode() == HttpStatus.CREATED){
+                String locationHeader = response.getHeaders().getLocation().toString();
+                String userId = extractUserIdFromLocation(locationHeader);
+                 userService.AddKeycloakUserToDB(userId, request);
+            }
 
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.CONFLICT) {
@@ -176,5 +180,10 @@ public class AuthServiceImpl implements AuthService {
         return null;
     }
 
-
+ public String extractUserIdFromLocation(String locationHeader) {
+     if (locationHeader == null) {
+         throw new RuntimeException("Location header is missing in the response");
+     }
+     return locationHeader.substring(locationHeader.lastIndexOf('/') + 1);
+ }
 }
