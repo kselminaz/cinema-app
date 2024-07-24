@@ -97,7 +97,11 @@ public class AuthServiceImpl implements AuthService {
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(userPayload, headers);
         try {
-            restTemplate.postForEntity(createUserUrl, requestEntity, Void.class);
+            ResponseEntity<Void> response = restTemplate.postForEntity(createUserUrl, requestEntity, Void.class);
+            if(response.getStatusCode() == HttpStatus.CREATED){
+                String locationHeader = response.getHeaders().getLocation().toString();
+                String userId = extractUserIdFromLocation(locationHeader);
+            }
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.CONFLICT) {
                 log.error("User already exists: " + e.getResponseBodyAsString());
@@ -171,5 +175,10 @@ public class AuthServiceImpl implements AuthService {
         return null;
     }
 
-
+ public String extractUserIdFromLocation(String locationHeader) {
+     if (locationHeader == null) {
+         throw new RuntimeException("Location header is missing in the response");
+     }
+     return locationHeader.substring(locationHeader.lastIndexOf('/') + 1);
+ }
 }
