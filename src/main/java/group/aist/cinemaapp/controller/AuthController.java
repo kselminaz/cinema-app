@@ -4,6 +4,7 @@ import group.aist.cinemaapp.dto.request.UserLoginRequest;
 import group.aist.cinemaapp.dto.request.UserRegisterRequest;
 import group.aist.cinemaapp.dto.response.TokenResponse;
 import group.aist.cinemaapp.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/create-user")
-    public ResponseEntity<String> createUser(@RequestBody UserRegisterRequest userDto) {
+    public ResponseEntity<String> createUser(@Valid @RequestBody UserRegisterRequest userDto) {
         log.info("Creating user: {}", userDto);
         try {
             String accessToken = authService.createUser(userDto);
@@ -34,7 +35,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public TokenResponse login(@RequestBody UserLoginRequest request) {
+    public TokenResponse login(@Valid @RequestBody UserLoginRequest request) {
         try {
             return authService.getUserAccessToken(request);
         } catch (Exception e) {

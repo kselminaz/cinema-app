@@ -26,6 +26,7 @@ public class UserTicketPdfDto {
     String sectorName;
     String row;
     Long seatNumber;
+    String customersInfo;
 
 
 }

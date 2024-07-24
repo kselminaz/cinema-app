@@ -18,12 +18,7 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE)
 public class UserTicketCreateRequest {
 
-    @NotNull(message = "User id is required")
-    @Positive(message = "User id must be greater than 0")
-    Long userId;
-
     @NotEmpty(message = "At least one ticket id  is required")
     Set<Long> ticketId;
-
 
 }

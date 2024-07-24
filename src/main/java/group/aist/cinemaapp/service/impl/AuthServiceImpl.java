@@ -4,6 +4,7 @@ import group.aist.cinemaapp.dto.request.UserLoginRequest;
 import group.aist.cinemaapp.dto.request.UserRegisterRequest;
 import group.aist.cinemaapp.dto.response.TokenResponse;
 import group.aist.cinemaapp.service.AuthService;
+import group.aist.cinemaapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,12 +14,12 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -26,6 +27,7 @@ import java.util.Map;
 public class AuthServiceImpl implements AuthService {
 
     private final RestTemplate restTemplate;
+    private final UserService userService;
 
     @Value("${keycloak.base-url}")
     private String keycloakBaseUrl;
@@ -57,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
                 if (responseBody != null) {
                     String accessToken = responseBody.get("access_token");
                     log.info("getAccessToken accessToken: {}", accessToken);
-                    return accessToken ;
+                    return accessToken;
                 }
             }
             log.error("Failed to obtain access token. Status code: " + response.getStatusCode());
@@ -101,7 +103,9 @@ public class AuthServiceImpl implements AuthService {
             if(response.getStatusCode() == HttpStatus.CREATED){
                 String locationHeader = response.getHeaders().getLocation().toString();
                 String userId = extractUserIdFromLocation(locationHeader);
+                 userService.AddKeycloakUserToDB(userId, request);
             }
+
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.CONFLICT) {
                 log.error("User already exists: " + e.getResponseBodyAsString());
@@ -147,6 +151,7 @@ public class AuthServiceImpl implements AuthService {
         }
         return null;
     }
+
     @Override
     public TokenResponse getAccessTokenByRefreshToken(String refreshToken) {
         String tokenUrl = keycloakBaseUrl + "/realms/" + realm + "/protocol/openid-connect/token";

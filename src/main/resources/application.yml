@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8086
   error:
     include-stacktrace: never
     include-message: always
@@ -30,6 +30,7 @@ spring:
           starttls:
             enable: true
             required: true
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

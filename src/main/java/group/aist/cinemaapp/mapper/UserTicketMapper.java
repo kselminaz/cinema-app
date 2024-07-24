@@ -1,9 +1,11 @@
 package group.aist.cinemaapp.mapper;
 
 import group.aist.cinemaapp.dto.UserTicketPdfDto;
+import group.aist.cinemaapp.dto.response.CompanyInfoResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.dto.response.UserTicketResponse;
 import group.aist.cinemaapp.enums.UserTicketStatus;
+import group.aist.cinemaapp.model.CompanyInfo;
 import group.aist.cinemaapp.model.UserTicket;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,17 +24,20 @@ public interface UserTicketMapper {
     @Mapping(target = "ticket", source = "ticket")
     UserTicketResponse toResponse(UserTicket entity);
 
-    @Mapping(target = " movieName", expression = "java(entity.getTicket().getSession().getMovie().getName())")
-    @Mapping(target = " movieDateTime", expression = "java(entity.getTicket().getSession().getDatetime())")
-    @Mapping(target = " price", expression = "java(entity.getTicket().getPrice())")
-    @Mapping(target = " currency", expression = "java(entity.getTicket().getCurrency().name())")
+    @Mapping(target = " movieName", expression = "java(userTicket.getTicket().getSession().getMovie().getName())")
+    @Mapping(target = " movieDateTime", expression = "java(userTicket.getTicket().getSession().getDatetime())")
+    @Mapping(target = " price", expression = "java(userTicket.getTicket().getPrice())")
+    @Mapping(target = " currency", expression = "java(userTicket.getTicket().getCurrency().name())")
     @Mapping(target = " qrCode", source = "qrcode")
-    @Mapping(target = " ticketNumber", expression = "java(entity.getTicketNumber())")
-    @Mapping(target = " hall", expression = "java(entity.getTicket().getSession().getHall().getName())")
-    @Mapping(target = " sectorName", expression = "java(entity.getTicket().getSeat().getSector().getName())")
-    @Mapping(target = " row", expression = "java(entity.getTicket().getSeat().getRow())")
-    @Mapping(target = " seatNumber", expression = "java(entity.getTicket().getSeat().getSeatNumber())")
-    UserTicketPdfDto toPDFResponse(UserTicket entity, String qrcode);
+    @Mapping(target = " ticketNumber", expression = "java(userTicket.getTicketNumber())")
+    @Mapping(target = " hall", expression = "java(userTicket.getTicket().getSession().getHall().getName())")
+    @Mapping(target = " sectorName", expression = "java(userTicket.getTicket().getSeat().getSector().getName())")
+    @Mapping(target = " row", expression = "java(userTicket.getTicket().getSeat().getRow())")
+    @Mapping(target = " seatNumber", expression = "java(userTicket.getTicket().getSeat().getSeatNumber())")
+    @Mapping(target = " companyName", expression = "java(companyInfo.getName())")
+    @Mapping(target = " companyImage", expression = "java(companyInfo.getLogo())")
+   /* @Mapping(target = " com", expression = "java(companyInfo.getCostumersInformationText()())")*/
+    UserTicketPdfDto toPDFResponse(UserTicket userTicket, CompanyInfoResponse companyInfo, String qrcode );
 
     @Named("getById")
     default UserTicketStatus getById(Integer id) {

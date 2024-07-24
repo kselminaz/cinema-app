@@ -71,7 +71,6 @@ public class HallServiceImpl implements HallService {
 
     @Override
     public void deleteHall(Long id) {
-
         var entity = fetchHallIfExist(id);
         entity.setStatus(HallStatus.DELETED.getId());
         hallRepository.save(entity);
