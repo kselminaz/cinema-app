@@ -5,7 +5,6 @@ import group.aist.cinemaapp.dto.response.CompanyInfoResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.dto.response.UserTicketResponse;
 import group.aist.cinemaapp.enums.UserTicketStatus;
-import group.aist.cinemaapp.model.CompanyInfo;
 import group.aist.cinemaapp.model.UserTicket;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -24,6 +23,7 @@ public interface UserTicketMapper {
     @Mapping(target = "ticket", source = "ticket")
     UserTicketResponse toResponse(UserTicket entity);
 
+
     @Mapping(target = " movieName", expression = "java(userTicket.getTicket().getSession().getMovie().getName())")
     @Mapping(target = " movieDateTime", expression = "java(userTicket.getTicket().getSession().getDatetime())")
     @Mapping(target = " price", expression = "java(userTicket.getTicket().getPrice())")
@@ -36,8 +36,8 @@ public interface UserTicketMapper {
     @Mapping(target = " seatNumber", expression = "java(userTicket.getTicket().getSeat().getSeatNumber())")
     @Mapping(target = " companyName", expression = "java(companyInfo.getName())")
     @Mapping(target = " companyImage", expression = "java(companyInfo.getLogo())")
-   /* @Mapping(target = " com", expression = "java(companyInfo.getCostumersInformationText()())")*/
-    UserTicketPdfDto toPDFResponse(UserTicket userTicket, CompanyInfoResponse companyInfo, String qrcode );
+    @Mapping(target = "customersInfo", expression = "java(companyInfo.getCostumersInformationText())")
+    UserTicketPdfDto toPDFResponse(UserTicket userTicket, CompanyInfoResponse companyInfo, String qrcode);
 
     @Named("getById")
     default UserTicketStatus getById(Integer id) {
