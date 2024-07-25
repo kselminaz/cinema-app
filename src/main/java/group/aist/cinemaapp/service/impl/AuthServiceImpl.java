@@ -19,7 +19,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -100,10 +99,10 @@ public class AuthServiceImpl implements AuthService {
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(userPayload, headers);
         try {
             ResponseEntity<Void> response = restTemplate.postForEntity(createUserUrl, requestEntity, Void.class);
-            if(response.getStatusCode() == HttpStatus.CREATED){
+            if (response.getStatusCode() == HttpStatus.CREATED) {
                 String locationHeader = response.getHeaders().getLocation().toString();
                 String userId = extractUserIdFromLocation(locationHeader);
-                 userService.AddKeycloakUserToDB(userId, request);
+                userService.AddKeycloakUserToDB(userId, request);
             }
 
         } catch (HttpClientErrorException e) {
@@ -180,10 +179,10 @@ public class AuthServiceImpl implements AuthService {
         return null;
     }
 
- public String extractUserIdFromLocation(String locationHeader) {
-     if (locationHeader == null) {
-         throw new RuntimeException("Location header is missing in the response");
-     }
-     return locationHeader.substring(locationHeader.lastIndexOf('/') + 1);
- }
+    public String extractUserIdFromLocation(String locationHeader) {
+        if (locationHeader == null) {
+            throw new RuntimeException("Location header is missing in the response");
+        }
+        return locationHeader.substring(locationHeader.lastIndexOf('/') + 1);
+    }
 }

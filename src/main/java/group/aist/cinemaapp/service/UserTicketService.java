@@ -2,10 +2,11 @@ package group.aist.cinemaapp.service;
 
 import group.aist.cinemaapp.criteria.PageCriteria;
 import group.aist.cinemaapp.dto.request.UserTicketCreateRequest;
-import group.aist.cinemaapp.dto.request.UserTicketUpdateRequest;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.dto.response.UserTicketResponse;
 import group.aist.cinemaapp.model.UserTicket;
+
+import java.util.List;
 
 public interface UserTicketService {
 
@@ -13,9 +14,7 @@ public interface UserTicketService {
 
     PageableResponse<UserTicketResponse> getUserTickets(PageCriteria pageCriteria);
 
-    String saveUserTicket(UserTicketCreateRequest request);
-
-    void updateUserTicket(Long id, UserTicketUpdateRequest request);
+    List<UserTicketResponse> saveUserTicket(UserTicketCreateRequest request);
 
     void updateUserTicketWithStatus(Long id, String status);
 

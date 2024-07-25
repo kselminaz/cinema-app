@@ -1,26 +1,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <div id="theatre_info" >
-    <img src="" width="300px" height="300px">
+    <img th:src=" ${pdfDto.getCompanyImage()}" alt="company logo" width="100px" height="100px"/>
 </div>
 <div>
     <h3 th:text="'Theatre: ' + ${pdfDto.getCompanyName()} "></h3>
     <h4 th:text="'Movie: ' + ${pdfDto.getMovieName()} "></h4>
 </div>
 <div id="qr_and_ticket_number">
-    <img th:src="'data:image/jpeg;base64,' + ${pdfDto.getQrCode()}" alt="Base64 Image">
+    <img th:src="'data:image/jpeg;base64,' + ${pdfDto.getQrCode()}" alt="Qr code" width="300px" height="300px"/>
     <a></a>
 </div>
 
 <div id="ticket_info">
-    <span>Tarix <br> Date</span> <label th:text=" ${pdfDto.getMovieDateTime()} "></label>
-    <span>Zal <br> Hall</span> <label th:text=" ${pdfDto.getHall()} "></label>
-    <span>Sektor <br> Sector</span> <label th:text=" ${pdfDto.getSectorName()} "></label>
-    <span>Oturacaq <br> Seat number</span> <label th:text=" ${pdfDto.getSeatNumber()} "></label>
+   <p><span>Tarix/Date :</span> <label th:text=" ${pdfDto.getMovieDateTime()} "></label></p>
+    <p><span>Zal/Hall :</span> <label th:text=" ${pdfDto.getHall()} "></label></p>
+    <p><span>Sektor/Sector :</span> <label th:text=" ${pdfDto.getSectorName()} "></label></p>
+    <p><span>Oturacaq/Seat number :</span> <label th:text=" ${pdfDto.getSeatNumber()} "></label></p>
 
 </div>
 <div id="customers_info">
-    <p  th:text="'Additional Information for Customers: ' + ${pdfDto.getCustomersInfo()()} "> </p>
+    <p  th:text="'Additional Information for Customers: ' + ${pdfDto.getCustomersInfo()} "> </p>
 </div>
 </body>
 </html>
