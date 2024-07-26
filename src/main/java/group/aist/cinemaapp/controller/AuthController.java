@@ -24,14 +24,9 @@ public class AuthController {
     }
 
     @PostMapping("/create-user")
-    public ResponseEntity<String> createUser(@Valid @RequestBody UserRegisterRequest userDto) {
+    public void createUser(@Valid @RequestBody UserRegisterRequest userDto) {
         log.info("Creating user: {}", userDto);
-        try {
-            String accessToken = authService.createUser(userDto);
-            return ResponseEntity.ok("Access token: " + accessToken);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create user: " + e.getMessage());
-        }
+        authService.createUser(userDto);
     }
 
     @PostMapping("/login")

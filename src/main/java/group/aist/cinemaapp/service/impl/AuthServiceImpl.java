@@ -14,11 +14,15 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Service
 @Slf4j
@@ -40,15 +44,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String getAccessToken() {
         String tokenUrl = keycloakBaseUrl + "/realms/" + realm + "/protocol/openid-connect/token";
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("grant_type", "client_credentials");
-        body.add("client_id", clientId);
-        body.add("client_secret", clientSecret);
-
-        log.info("getAccessToken url: {}", tokenUrl);
+        MultiValueMap<String, String> body = createBody("client_credentials");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
 
         try {
@@ -56,91 +54,63 @@ public class AuthServiceImpl implements AuthService {
             if (response.getStatusCode().is2xxSuccessful()) {
                 Map<String, String> responseBody = response.getBody();
                 if (responseBody != null) {
-                    String accessToken = responseBody.get("access_token");
-                    log.info("getAccessToken accessToken: {}", accessToken);
+                    var accessToken = responseBody.get("access_token");
                     return accessToken;
                 }
             }
-            log.error("Failed to obtain access token. Status code: " + response.getStatusCode());
+             throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Failed to obtain access token.");
         } catch (Exception e) {
-            log.error("Exception occurred while obtaining access token: " + e.getMessage());
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Failed to obtain access token.");
         }
-        return null;
     }
 
     @Override
-    public String createUser(UserRegisterRequest request) {
-        log.info("createUser request: {}", request);
-        String accessToken = getAccessToken();
-        if (accessToken == null) {
-            throw new RuntimeException("Failed to obtain access token");
-        }
+    public void createUser(UserRegisterRequest request) {
         String createUserUrl = keycloakBaseUrl + "/admin/realms/" + realm + "/users";
-
+        String accessToken = getAccessToken();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(accessToken);
-
-        Map<String, Object> userPayload = new HashMap<>();
-        userPayload.put("username", request.getUsername());
-        userPayload.put("enabled", true);
-        userPayload.put("email", request.getEmail());
-        userPayload.put("credentials", List.of(Map.of("type", "password", "value", request.getPassword(), "temporary", false)));
-
-        Map<String, List<String>> attributes = new HashMap<>();
-        attributes.put("phone", List.of(request.getPhone()));
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String dobFormatted = request.getDob().format(formatter);
-        attributes.put("dob", List.of(dobFormatted));
-
-        userPayload.put("attributes", attributes);
-
+        Map<String, Object> userPayload = createUserPayload(request);
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(userPayload, headers);
+
         try {
             ResponseEntity<Void> response = restTemplate.postForEntity(createUserUrl, requestEntity, Void.class);
-            if (response.getStatusCode() == HttpStatus.CREATED) {
+            if(response.getStatusCode() == HttpStatus.CREATED){
                 String locationHeader = response.getHeaders().getLocation().toString();
                 String userId = extractUserIdFromLocation(locationHeader);
                 userService.AddKeycloakUserToDB(userId, request);
             }
-
         } catch (HttpClientErrorException e) {
-            if (e.getStatusCode() == HttpStatus.CONFLICT) {
-                log.error("User already exists: " + e.getResponseBodyAsString());
-                throw new RuntimeException("User already exists with username or email");
+            if(e.getStatusCode() == HttpStatus.CONFLICT) {
+                throw new ResponseStatusException(BAD_REQUEST,"User already exists with username or email");
             } else {
-                log.error("Exception occurred while creating user: " + e.getMessage());
-                throw e;
+                throw new ResponseStatusException(BAD_REQUEST,
+                        String.format("Exception occurred while creating user: %s", e.getMessage()), e);
             }
         } catch (Exception e) {
-            log.error("Exception occurred while creating user: " + e.getMessage());
-            throw e;
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR,
+                    "Exception occurred while creating user.", e);
         }
-        return accessToken;
     }
 
     @Override
     public TokenResponse getUserAccessToken(UserLoginRequest request) {
         String tokenUrl = keycloakBaseUrl + "/realms/" + realm + "/protocol/openid-connect/token";
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("grant_type", "password");
-        body.add("client_id", clientId);
-        body.add("client_secret", clientSecret);
+        MultiValueMap<String, String> body = createBody("password");
         body.add("username", request.getUsername());
         body.add("password", request.getPassword());
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
 
         try {
+            log.info("request getdi");
             ResponseEntity<Map> response = restTemplate.postForEntity(tokenUrl, requestEntity, Map.class);
+            log.info(response.getStatusCode().toString());
             if (response.getStatusCode().is2xxSuccessful()) {
                 Map<String, String> responseBody = response.getBody();
                 if (responseBody != null) {
-                    log.info("getUserAccessToken access_token: {}", responseBody.get("access_token"));
                     return new TokenResponse(responseBody.get("access_token"), responseBody.get("refresh_token"));
                 }
             }
@@ -154,14 +124,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public TokenResponse getAccessTokenByRefreshToken(String refreshToken) {
         String tokenUrl = keycloakBaseUrl + "/realms/" + realm + "/protocol/openid-connect/token";
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("grant_type", "refresh_token");
+        MultiValueMap<String, String> body = createBody("refresh_token");
         body.add("refresh_token", refreshToken);
-        body.add("client_id", clientId);
-        body.add("client_secret", clientSecret);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
 
         try {
@@ -177,6 +143,29 @@ public class AuthServiceImpl implements AuthService {
             log.error("Exception occurred while obtaining access token using refresh token: " + e.getMessage());
         }
         return null;
+    }
+    public Map<String, Object> createUserPayload(UserRegisterRequest request){
+        Map<String, Object> userPayload = new HashMap<>();
+        userPayload.put("username", request.getUsername());
+        userPayload.put("enabled", true);
+        userPayload.put("email", request.getEmail());
+        userPayload.put("credentials", List.of(Map.of("type", "password", "value", request.getPassword(), "temporary", false)));
+        Map<String, List<String>> attributes = new HashMap<>();
+        attributes.put("phone", List.of(request.getPhone()));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String dobFormatted = request.getDob().format(formatter);
+        attributes.put("dob", List.of(dobFormatted));
+        userPayload.put("attributes", attributes);
+
+        return userPayload;
+    }
+
+    public MultiValueMap<String, String> createBody(String grantType){
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("grant_type", grantType);
+        body.add("client_id", clientId);
+        body.add("client_secret", clientSecret);
+        return body;
     }
 
     public String extractUserIdFromLocation(String locationHeader) {

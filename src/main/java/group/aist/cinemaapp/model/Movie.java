@@ -1,6 +1,7 @@
 package group.aist.cinemaapp.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -43,6 +44,7 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie", orphanRemoval = true)
     @ToString.Exclude
+    @JsonManagedReference
     Set<MovieLanguage> languages;
 
     @ManyToMany
@@ -51,6 +53,7 @@ public class Movie {
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "language_id"))
     @ToString.Exclude
+    @JsonManagedReference
     Set<Language> subtitleLanguages;
 
 

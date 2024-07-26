@@ -35,8 +35,6 @@ public class UserRegisterRequest {
     @Email(message = "This field should be mail")
     String email;
 
-
-//    @NotEmpty(message = "Date of Birth is required")
     @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate dob;
 
