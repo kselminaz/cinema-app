@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
 public class MovieSessionSearchCriteria {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime searchDateTime;
+    private LocalDate searchDate;
 
     private String movieName;
 
-    private  String movieLanguage;
+    private String movieLanguage;
 
     private String status;
 
