@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 import static group.aist.cinemaapp.enums.LanguageStatus.VISIBLE;
@@ -116,6 +117,7 @@ public class MovieServiceImpl implements MovieService {
     public Movie fetchMovieIfExist(Long id) {
         return movieRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Movie with id [" + id + "] is not visible."));
     }
+
 
     public void addRelations(Movie movie, List<Long> subtitleLanguageIds, List<MovieLanguageRequest> movieLanguages) {
         if (!subtitleLanguageIds.isEmpty()) {

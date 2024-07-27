@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.controller;
 
+import group.aist.cinemaapp.criteria.MovieSessionSearchCriteria;
 import group.aist.cinemaapp.criteria.MovieSessionSortingCriteria;
 import group.aist.cinemaapp.criteria.PageCriteria;
 import group.aist.cinemaapp.dto.request.MovieSessionCreateRequest;
@@ -25,8 +26,8 @@ public class MovieSessionController {
     }
 
     @GetMapping
-    public PageableResponse<MovieSessionResponse> getMovieSessions(PageCriteria pageCriteria, MovieSessionSortingCriteria criteria) {
-        return movieSessionService.getMovieSessions(pageCriteria,criteria);
+    public PageableResponse<MovieSessionResponse> getMovieSessions(PageCriteria pageCriteria, MovieSessionSortingCriteria sortingCriteria, MovieSessionSearchCriteria searchCriteria) {
+        return movieSessionService.getMovieSessions(pageCriteria,sortingCriteria,searchCriteria);
     }
 
     @PostMapping

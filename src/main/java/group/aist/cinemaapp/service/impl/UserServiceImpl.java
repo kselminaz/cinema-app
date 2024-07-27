@@ -6,8 +6,9 @@ import group.aist.cinemaapp.dto.request.UserRegisterRequest;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.mapper.UserMapper;
 import group.aist.cinemaapp.model.User;
+import group.aist.cinemaapp.model.UserBalance;
+import group.aist.cinemaapp.repository.UserBalanceRepository;
 import group.aist.cinemaapp.repository.UserRepository;
-import group.aist.cinemaapp.service.UserBalanceService;
 import group.aist.cinemaapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final UserBalanceService userBalanceService;
+    private final UserBalanceRepository userBalanceRepository;
 
     @Override
     public User getUserById(String id) {
@@ -44,10 +45,12 @@ public class UserServiceImpl implements UserService {
     public User AddKeycloakUserToDB(String userId, UserRegisterRequest request) {
         var user = userMapper.toUserEntity(request);
         user.setId(userId);
-        userRepository.save(user);
 
-        var userBalance = userBalanceService.saveUserBalance(userId, AZN, BigDecimal.valueOf(100));
+        var userBalance = UserBalance.builder().user(user).currency(AZN).amount(BigDecimal.valueOf(100)).build();
+        userBalanceRepository.save(userBalance);
+
         user.setBalances(Set.of(userBalance));
+        userRepository.save(user);
 
         return user;
     }
