@@ -43,7 +43,7 @@ public class MovieSessionSpecification implements Specification<MovieSession> {
         else
             predicates.add(criteriaBuilder.equal(root.get("status"), MovieSessionStatus.VISIBLE.getId()));
 
-        return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
 
     }
 }

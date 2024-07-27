@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import group.aist.cinemaapp.enums.MovieSessionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +29,7 @@ public class MovieSessionResponse {
 
     String subtitleLanguage;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     LocalDateTime datetime;
 
     MovieSessionStatus status;

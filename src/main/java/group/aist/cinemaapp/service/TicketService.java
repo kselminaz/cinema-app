@@ -2,6 +2,7 @@ package group.aist.cinemaapp.service;
 import group.aist.cinemaapp.criteria.PageCriteria;
 import group.aist.cinemaapp.dto.request.TicketCreateRequest;
 import group.aist.cinemaapp.dto.request.TicketUpdateRequest;
+import group.aist.cinemaapp.dto.request.TicketsCreateRequest;
 import group.aist.cinemaapp.dto.response.TicketResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.model.Ticket;
@@ -13,6 +14,8 @@ public interface TicketService {
     PageableResponse<TicketResponse> getTickets(PageCriteria pageCriteria);
 
     void saveTicket(TicketCreateRequest ticketRequest);
+
+    void addTicketsForSeats(TicketsCreateRequest request);
 
     void updateTicket(Long id, TicketUpdateRequest ticketRequest);
 
