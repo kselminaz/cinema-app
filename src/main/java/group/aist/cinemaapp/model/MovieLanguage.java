@@ -1,5 +1,7 @@
 package group.aist.cinemaapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -32,10 +34,12 @@ public class MovieLanguage {
 
     @ManyToOne(cascade = ALL)
     @JoinColumn(name = "movie_id")
+    @JsonIgnore
     Movie movie;
 
     @ManyToOne(cascade = ALL)
     @JoinColumn(name = "language_id")
+    @JsonIgnore
     Language language;
 
     Boolean isMain;

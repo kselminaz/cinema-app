@@ -8,7 +8,7 @@ import group.aist.cinemaapp.dto.response.TokenResponse;
 public interface AuthService {
 
     String getAccessToken();
-    String createUser(UserRegisterRequest request);
+    void createUser(UserRegisterRequest request);
     TokenResponse getUserAccessToken(UserLoginRequest request);
     TokenResponse getAccessTokenByRefreshToken(String refreshToken);
 }

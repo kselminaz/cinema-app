@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -37,6 +38,7 @@ public class Language {
 
     @ManyToMany(mappedBy = "subtitleLanguages", fetch = LAZY, cascade = ALL)
     @ToString.Exclude
+    @JsonBackReference
     List<Movie> movieWithSubtitleLanguages;
 
     @Override

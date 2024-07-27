@@ -17,8 +17,10 @@ import group.aist.cinemaapp.service.LanguageService;
 import group.aist.cinemaapp.service.MovieService;
 import group.aist.cinemaapp.util.ImageSaveUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
@@ -31,8 +33,7 @@ import java.util.stream.Collectors;
 import static group.aist.cinemaapp.enums.LanguageStatus.VISIBLE;
 import static group.aist.cinemaapp.enums.MovieStatus.DELETED;
 import static java.util.Optional.ofNullable;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 
 @Service
@@ -58,6 +59,16 @@ public class MovieServiceImpl implements MovieService {
     public PageableResponse<MovieResponse> getMovies(PageCriteria pageCriteria) {
         var resultsPage = movieRepository.findAllByStatusIs(PageRequest.of(pageCriteria.getPage(), pageCriteria.getCount()), VISIBLE.getId());
         return movieMapper.toPageableResponse(resultsPage);
+    }
+
+    @Override
+    @Transactional
+    public List<MovieResponse> searchMovies(String searchText) {
+        var movies = movieRepository.findMoviesBySearchText(searchText);
+        if(!movies.isEmpty()){
+            return movieMapper.getMovieList(movies);
+        }
+       throw new ResponseStatusException(NO_CONTENT,"There ar not movies.");
     }
 
     @Override
