@@ -1,6 +1,7 @@
 package group.aist.cinemaapp.service;
 
 import group.aist.cinemaapp.criteria.PageCriteria;
+import group.aist.cinemaapp.dto.request.ManySeatCreateRequest;
 import group.aist.cinemaapp.dto.request.SectorCreateRequest;
 import group.aist.cinemaapp.dto.request.SectorUpdateRequest;
 import group.aist.cinemaapp.dto.response.PageableResponse;

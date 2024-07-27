@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.service.impl;
 
+import group.aist.cinemaapp.dto.request.ManySeatCreateRequest;
 import group.aist.cinemaapp.dto.request.SeatCreateRequest;
 import group.aist.cinemaapp.dto.request.SeatUpdateRequest;
 import group.aist.cinemaapp.dto.response.SeatResponse;
@@ -52,6 +53,16 @@ public class SeatServiceImpl implements SeatService {
         seat.setStatus(AVAILABLE.getId());
         addRelations(seat, seatCreateRequest.getSector());
         seatRepository.save(seat);
+    }
+    @Override
+    public void saveManySeat(ManySeatCreateRequest request){
+        for(long i = request.getFirstSeatNumber(); i <= request.getLastSeatNumber(); i++){
+            Seat seat = seatMapper.toSeat(request);
+            seat.setStatus(AVAILABLE.getId());
+            seat.setSeatNumber(i);
+            addRelations(seat, request.getSector());
+            seatRepository.save(seat);
+        }
     }
 
     @Override

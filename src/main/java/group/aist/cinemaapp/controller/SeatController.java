@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.controller;
 
+import group.aist.cinemaapp.dto.request.ManySeatCreateRequest;
 import group.aist.cinemaapp.dto.request.SeatCreateRequest;
 import group.aist.cinemaapp.dto.request.SeatUpdateRequest;
 import group.aist.cinemaapp.dto.response.SeatResponse;
@@ -25,11 +26,19 @@ public class SeatController {
     public List<SeatResponse> getAllSeats() {
         return seatService.getSeats();
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public void saveSeat(@RequestBody SeatCreateRequest seatCreateRequest) {
         seatService.saveSeat(seatCreateRequest);
     }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/many")
+    public void saveManySeat(@RequestBody ManySeatCreateRequest manySeatCreateRequest) {
+        seatService.saveManySeat(manySeatCreateRequest);
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("{id}")
     public void updateSeat(@PathVariable Long id, @RequestBody SeatUpdateRequest seatUpdateRequest) {
