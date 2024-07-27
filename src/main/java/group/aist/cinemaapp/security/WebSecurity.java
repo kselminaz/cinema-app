@@ -41,7 +41,12 @@ public class WebSecurity {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/error").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/v1/movies/**","/v1/languages/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/v1/movies/**",
+                                "/v1/languages/**",
+                                "/v1/seats/**",
+                                "/v1/halls/**",
+                                "/v1/sectors/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter))
