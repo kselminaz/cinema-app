@@ -2,6 +2,7 @@ package group.aist.cinemaapp.controller;
 import group.aist.cinemaapp.criteria.PageCriteria;
 import group.aist.cinemaapp.dto.request.TicketUpdateRequest;
 import group.aist.cinemaapp.dto.request.TicketCreateRequest;
+import group.aist.cinemaapp.dto.request.TicketsCreateRequest;
 import group.aist.cinemaapp.dto.response.TicketResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.service.TicketService;
@@ -30,6 +31,11 @@ public class TicketController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public void saveTicket(@RequestBody TicketCreateRequest request) {
         ticketService.saveTicket(request);
+    }
+
+    @PostMapping("/for-seats")
+    public void saveTicket(@RequestBody TicketsCreateRequest request) {
+        ticketService.addTicketsForSeats(request);
     }
 
     @PutMapping("/{id}")

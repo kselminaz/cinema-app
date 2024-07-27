@@ -17,6 +17,7 @@ import java.util.List;
 public interface TicketMapper {
 
     @Mapping(target = "seat", ignore = true)
+    @Mapping(target = "session", ignore = true)
     @Mapping(target = "status", ignore = true)
     Ticket toEntity(TicketCreateRequest request);
 

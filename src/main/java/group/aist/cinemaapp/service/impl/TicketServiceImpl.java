@@ -1,11 +1,12 @@
 package group.aist.cinemaapp.service.impl;
 
+import group.aist.cinemaapp.annotation.Log;
 import group.aist.cinemaapp.criteria.PageCriteria;
 import group.aist.cinemaapp.dto.request.TicketCreateRequest;
 import group.aist.cinemaapp.dto.request.TicketUpdateRequest;
-import group.aist.cinemaapp.dto.response.TicketResponse;
+import group.aist.cinemaapp.dto.request.TicketsCreateRequest;
 import group.aist.cinemaapp.dto.response.PageableResponse;
-import group.aist.cinemaapp.enums.CurrencyType;
+import group.aist.cinemaapp.dto.response.TicketResponse;
 import group.aist.cinemaapp.enums.TicketStatus;
 import group.aist.cinemaapp.mapper.TicketMapper;
 import group.aist.cinemaapp.model.Ticket;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static java.util.Optional.ofNullable;
@@ -27,6 +29,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
+@Log
 public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
@@ -53,8 +56,24 @@ public class TicketServiceImpl implements TicketService {
     public void saveTicket(TicketCreateRequest request) {
         var entity = ticketMapper.toEntity(request);
         entity.setStatus(TicketStatus.ACTIVE.getId());
-        addRelations(entity, request.getSeatId(),request.getSessionId());
+        addRelations(entity, request.getSeatId(), request.getSessionId());
         ticketRepository.save(entity);
+    }
+
+    @Override
+    @Transactional
+    public void addTicketsForSeats(TicketsCreateRequest request) {
+        var entities = new ArrayList<Ticket>();
+
+        for (var seadId : request.getSeatIds()) {
+            var entity = ticketMapper.toEntity(new TicketCreateRequest(1L, 1L, request.getPrice(), request.getCurrency()));
+            entity.setStatus(TicketStatus.ACTIVE.getId());
+            addRelations(entity, seadId, request.getSessionId());
+            entities.add(entity);
+        }
+
+        ticketRepository.saveAll(entities);
+
     }
 
     @Override
@@ -93,7 +112,7 @@ public class TicketServiceImpl implements TicketService {
         )));
     }
 
-    private void addRelations(Ticket entity, Long seatId,Long sessionId) {
+    private void addRelations(Ticket entity, Long seatId, Long sessionId) {
         if (seatId != null) {
             var seat = seatService.getSeatIfExist(seatId);
             entity.setSeat(seat);

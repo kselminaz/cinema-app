@@ -15,6 +15,7 @@ import group.aist.cinemaapp.repository.MovieSessionRepository;
 import group.aist.cinemaapp.service.HallService;
 import group.aist.cinemaapp.service.MovieService;
 import group.aist.cinemaapp.service.MovieSessionService;
+import group.aist.cinemaapp.specification.MovieSessionSpecification;
 import group.aist.cinemaapp.util.SortingUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -24,8 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
+import java.util.Objects;
 
-import static group.aist.cinemaapp.enums.LanguageStatus.VISIBLE;
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -56,8 +57,7 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     public PageableResponse<MovieSessionResponse> getMovieSessions(PageCriteria pageCriteria, MovieSessionSortingCriteria sortingCriteria, MovieSessionSearchCriteria searchCriteria) {
 
         var orders = sortingUtil.buildSortOrdersForMovieSessions(sortingCriteria);
-        //  var resultsPage = movieSessionRepository.findAllByStatusIs(new MovieSessionSpecification(searchCriteria),PageRequest.of(pageCriteria.getPage(), pageCriteria.getCount(), Sort.by(orders)), VISIBLE.getId());
-        var resultsPage = movieSessionRepository.findAllByStatusIs(PageRequest.of(pageCriteria.getPage(), pageCriteria.getCount(), Sort.by(orders)), VISIBLE.getId());
+        var resultsPage = movieSessionRepository.findAll(new MovieSessionSpecification(searchCriteria), PageRequest.of(pageCriteria.getPage(), pageCriteria.getCount(), Sort.by(orders)));
         return movieSessionMapper.toPageableResponse(resultsPage);
     }
 
@@ -117,7 +117,7 @@ public class MovieSessionServiceImpl implements MovieSessionService {
             entity.setMovie(movie);
 
             if (movieLanguageId != null) {
-                var movieLanguage = movie.getLanguages().stream().filter(movieLang -> movieLang.getId() == movieLanguageId).findFirst()
+                var movieLanguage = movie.getLanguages().stream().filter(movieLang -> Objects.equals(movieLang.getId(), movieLanguageId)).findFirst()
                         .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, String.format(
                                 "Movie Language with id [%d] was not found!", movieLanguageId
                         )));
@@ -125,12 +125,12 @@ public class MovieSessionServiceImpl implements MovieSessionService {
                 entity.setLanguage(movieLanguage);
             }
             if (subtitleLanguageId != null) {
-                System.out.println(movie.getSubtitleLanguages());
-                var movieSubtitleLanguage = movie.getSubtitleLanguages().stream().filter(subtitleLang -> subtitleLang.getId() == subtitleLanguageId).findFirst()
+
+                var movieSubtitleLanguage = movie.getSubtitleLanguages().stream().filter(subtitleLang -> Objects.equals(subtitleLang.getId(), subtitleLanguageId)).findFirst()
                         .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, String.format(
                                 "Movie Subtitle Language with id [%d] was not found!", subtitleLanguageId
                         )));
-                System.out.println(movieSubtitleLanguage);
+
                 entity.setSubtitleLanguage(movieSubtitleLanguage);
             }
         }
