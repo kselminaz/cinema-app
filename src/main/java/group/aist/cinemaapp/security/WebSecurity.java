@@ -46,7 +46,8 @@ public class WebSecurity {
                                 "/v1/languages/**",
                                 "/v1/seats/**",
                                 "/v1/halls/**",
-                                "/v1/sectors/**").permitAll()
+                                "/v1/sectors/**",
+                                "/v1/company-info/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter))

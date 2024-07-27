@@ -27,33 +27,36 @@ public class SeatController {
         return seatService.getSeats();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void saveSeat(@RequestBody SeatCreateRequest seatCreateRequest) {
         seatService.saveSeat(seatCreateRequest);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/many")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void saveManySeat(@RequestBody ManySeatCreateRequest manySeatCreateRequest) {
         seatService.saveManySeat(manySeatCreateRequest);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateSeat(@PathVariable Long id, @RequestBody SeatUpdateRequest seatUpdateRequest) {
         seatService.updateSeat(id, seatUpdateRequest);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @PatchMapping("{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public void updateSeatStatus(@PathVariable Long id, @RequestParam String status) {
         seatService.updateSeatStatus(id,status);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteSeatById(@PathVariable Long id) {
         seatService.deleteSeatById(id);
     }
+
     @GetMapping("/book/{id}")
     public void bookSeatById(@PathVariable Long id) {
         seatService.bookSeatById(id);

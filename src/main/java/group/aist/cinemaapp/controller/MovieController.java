@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/movies")
@@ -39,25 +41,27 @@ public class MovieController {
         return ResponseEntity.ok(movies);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(consumes = "multipart/form-data")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(CREATED)
     public void saveMovie(@RequestPart("data") MovieCreateRequest movieCreateRequest, @RequestPart("file") MultipartFile file) {
         movieService.saveMovie(movieCreateRequest,file);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateMovie(@PathVariable Long id, @RequestBody MovieUpdateRequest movieUpdateRequest) {
         movieService.updateMovie(id, movieUpdateRequest);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateMovieStatus(@PathVariable Long id, @RequestParam String status) {
         movieService.updateMovieStatus(id, status);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteMovieById(@PathVariable Long id) {
         movieService.deleteMovieById(id);
     }
