@@ -8,6 +8,7 @@ import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.service.LanguageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -33,6 +34,7 @@ public class LanguageController {
 
     @PostMapping
     @ResponseStatus(CREATED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void saveLanguage(@Valid @RequestBody LanguageCreateRequest request) {
 
         languageService.saveLanguage(request);
@@ -40,12 +42,14 @@ public class LanguageController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteLanguage(@PathVariable Long id) {
         languageService.deleteLanguage(id);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateLanguage(@PathVariable Long id, @Valid @RequestBody LanguageUpdateRequest request) {
 
         languageService.updateLanguage(id, request);
@@ -53,6 +57,7 @@ public class LanguageController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateLanguageWithStatus(@PathVariable Long id, @RequestParam String status) {
 
         languageService.updateLanguageWithStatus(id, status);

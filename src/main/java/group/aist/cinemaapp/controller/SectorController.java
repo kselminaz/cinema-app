@@ -16,14 +16,17 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @RequestMapping("/v1/sectors")
 public class SectorController {
     private final SectorService sectorService;
+
     @GetMapping("/{id}")
     public SectorResponse getSectorById(@PathVariable Long id) {
         return sectorService.getSectorById(id);
     }
+
     @GetMapping
     public PageableResponse<SectorResponse> getSectors(PageCriteria pageCriteria) {
         return sectorService.getSectors(pageCriteria);
     }
+
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(CREATED)
@@ -47,7 +50,7 @@ public class SectorController {
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @ResponseStatus(NO_CONTENT)
+//    @ResponseStatus(NO_CONTENT)
     public void updateSectorWithStatus(@PathVariable Long id, @RequestParam String status) {
         sectorService.updateSectorWithStatus(id, status);
     }

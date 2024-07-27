@@ -19,7 +19,6 @@ public class MovieSessionController {
 
     private final MovieSessionService movieSessionService;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public MovieSessionResponse getMovieSessionById(@PathVariable Long id) {
         return movieSessionService.getMovieSessionById(id);
@@ -31,21 +30,25 @@ public class MovieSessionController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void saveMovieSession(@RequestBody MovieSessionCreateRequest request) {
         movieSessionService.saveMovieSession(request);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateMovieSession(@PathVariable Long id, @RequestBody MovieSessionUpdateRequest request) {
         movieSessionService.updateMovieSession(id, request);
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateMovieSessionStatus(@PathVariable Long id, @RequestParam String status) {
         movieSessionService.updateMovieSessionWithStatus(id, status);
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteMovieSessionById(@PathVariable Long id) {
         movieSessionService.deleteMovieSession(id);
     }
