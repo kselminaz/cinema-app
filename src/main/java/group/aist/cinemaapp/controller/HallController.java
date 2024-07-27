@@ -7,6 +7,7 @@ import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.service.HallService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -15,30 +16,40 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @RequiredArgsConstructor
 public class HallController {
     private final HallService hallService;
+
     @GetMapping("/{id}")
     public HallResponse getHallById(@PathVariable Long id) {
         return hallService.getHallById(id);
     }
+
     @GetMapping
     public PageableResponse<HallResponse> getHalls(PageCriteria pageCriteria) {
         return hallService.getHalls(pageCriteria);
     }
+
     @PostMapping
     @ResponseStatus(CREATED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void saveHall(@Valid @RequestBody HallCreateRequest request) {
         hallService.saveHall(request);
     }
+
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteHall(@PathVariable Long id) {
         hallService.deleteHall(id);
     }
+
     @PutMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateHall(@PathVariable Long id, @Valid @RequestBody HallUpdateRequest request) {
         hallService.updateHall(id, request);
     }
+
     @PatchMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateHallWithStatus(@PathVariable Long id, @RequestParam String status) {
         hallService.updateHallWithStatus(id, status);
     }

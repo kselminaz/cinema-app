@@ -39,7 +39,6 @@ public class UserTicketController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(CREATED)
     public List<UserTicketResponse> saveUserTicket(@Valid @RequestBody UserTicketCreateRequest request) {
-
         return userTicketService.saveUserTicket(request);
     }
 
@@ -54,7 +53,6 @@ public class UserTicketController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(NO_CONTENT)
     public void updateUserTicketWithStatus(@PathVariable Long id, @RequestParam String status) {
-
         userTicketService.updateUserTicketWithStatus(id, status);
     }
 
