@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.service;
 
+import group.aist.cinemaapp.criteria.MovieSessionSearchCriteria;
 import group.aist.cinemaapp.criteria.MovieSessionSortingCriteria;
 import group.aist.cinemaapp.criteria.PageCriteria;
 import group.aist.cinemaapp.dto.request.MovieSessionCreateRequest;
@@ -12,7 +13,7 @@ public interface MovieSessionService {
 
     MovieSessionResponse getMovieSessionById(Long id);
 
-    PageableResponse<MovieSessionResponse> getMovieSessions(PageCriteria pageCriteria, MovieSessionSortingCriteria criteria);
+    PageableResponse<MovieSessionResponse> getMovieSessions(PageCriteria pageCriteria, MovieSessionSortingCriteria criteria, MovieSessionSearchCriteria searchCriteria);
 
     void saveMovieSession(MovieSessionCreateRequest movieRequest);
 

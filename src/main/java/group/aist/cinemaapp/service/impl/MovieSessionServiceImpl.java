@@ -1,6 +1,7 @@
 package group.aist.cinemaapp.service.impl;
 
 import group.aist.cinemaapp.annotation.Log;
+import group.aist.cinemaapp.criteria.MovieSessionSearchCriteria;
 import group.aist.cinemaapp.criteria.MovieSessionSortingCriteria;
 import group.aist.cinemaapp.criteria.PageCriteria;
 import group.aist.cinemaapp.dto.request.MovieSessionCreateRequest;
@@ -40,6 +41,7 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     private final MovieService movieService;
     private final SortingUtil sortingUtil;
 
+
     @Override
     @Transactional
     public MovieSessionResponse getMovieSessionById(Long id) {
@@ -51,9 +53,10 @@ public class MovieSessionServiceImpl implements MovieSessionService {
 
     @Override
     @Transactional
-    public PageableResponse<MovieSessionResponse> getMovieSessions(PageCriteria pageCriteria, MovieSessionSortingCriteria sortingCriteria) {
+    public PageableResponse<MovieSessionResponse> getMovieSessions(PageCriteria pageCriteria, MovieSessionSortingCriteria sortingCriteria, MovieSessionSearchCriteria searchCriteria) {
 
         var orders = sortingUtil.buildSortOrdersForMovieSessions(sortingCriteria);
+        //  var resultsPage = movieSessionRepository.findAllByStatusIs(new MovieSessionSpecification(searchCriteria),PageRequest.of(pageCriteria.getPage(), pageCriteria.getCount(), Sort.by(orders)), VISIBLE.getId());
         var resultsPage = movieSessionRepository.findAllByStatusIs(PageRequest.of(pageCriteria.getPage(), pageCriteria.getCount(), Sort.by(orders)), VISIBLE.getId());
         return movieSessionMapper.toPageableResponse(resultsPage);
     }

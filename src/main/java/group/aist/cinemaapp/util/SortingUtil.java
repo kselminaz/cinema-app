@@ -25,7 +25,7 @@ public class SortingUtil {
 
         List<Sort.Order> orders = new ArrayList<>();
 
-        getOrder("datetime", sortingCriteria.getDatetime()).ifPresent(orders::add);
+        getOrder("datetime", sortingCriteria.getSortDateTime()).ifPresent(orders::add);
 
         return orders;
     }

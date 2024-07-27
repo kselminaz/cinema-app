@@ -44,9 +44,3 @@ keycloak:
   realm: team2
   client-id: cinema_client
   client-secret: RASY3CLoZYQ0NOlBTaRJ5ZvvfGLVHhNZ
-
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
