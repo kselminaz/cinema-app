@@ -23,7 +23,7 @@ public interface MovieService {
 
     void saveMovie(MovieCreateRequest movieCreateRequest, MultipartFile file);
 
-    void updateMovie(Long id, MovieUpdateRequest movieUpdateRequest);
+    void updateMovie(Long id, MovieUpdateRequest movieUpdateRequest, MultipartFile file);
 
     void updateMovieStatus(Long id, String status);
 

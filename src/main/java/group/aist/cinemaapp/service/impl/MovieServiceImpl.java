@@ -12,18 +12,17 @@ import group.aist.cinemaapp.mapper.MovieMapper;
 import group.aist.cinemaapp.model.Language;
 import group.aist.cinemaapp.model.Movie;
 import group.aist.cinemaapp.model.MovieLanguage;
-import group.aist.cinemaapp.repository.MovieLanguageRepository;
 import group.aist.cinemaapp.repository.MovieRepository;
 import group.aist.cinemaapp.service.LanguageService;
 import group.aist.cinemaapp.service.MovieService;
 import group.aist.cinemaapp.util.ImageSaveUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -45,10 +44,8 @@ public class MovieServiceImpl implements MovieService {
     private final MovieMapper movieMapper;
     private final LanguageService languageService;
     private final ImageSaveUtil imageSaveUtil;
-    private final MovieLanguageRepository movieLanguageRepository;
 
     @Override
-    @Transactional
     public MovieResponse getMovieById(Long id) {
         Movie movie = fetchMovieIfExist(id);
         if (movie.getStatus() != MovieStatus.VISIBLE.getId()) {
@@ -58,7 +55,6 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    @Transactional
     public PageableResponse<MovieResponse> getMovies(PageCriteria pageCriteria) {
         var resultsPage = movieRepository.findAllByStatusIs(PageRequest.of(pageCriteria.getPage(), pageCriteria.getCount()), VISIBLE.getId());
         return movieMapper.toPageableResponse(resultsPage);
@@ -68,19 +64,18 @@ public class MovieServiceImpl implements MovieService {
     @Transactional
     public List<MovieResponse> searchMovies(String searchText) {
         var movies = movieRepository.findMoviesBySearchText(searchText);
-        if (!movies.isEmpty()) {
+        if(!movies.isEmpty()){
             return movieMapper.getMovieList(movies);
         }
-        throw new ResponseStatusException(NO_CONTENT, "There ar not movies.");
+       throw new ResponseStatusException(NO_CONTENT,"There ar not movies.");
     }
 
     @Override
-    @Transactional
     public void saveMovie(MovieCreateRequest movieCreateRequest, MultipartFile file) {
         Movie movie = movieMapper.toMovie(movieCreateRequest);
         movie.setStatus(MovieStatus.VISIBLE.getId());
         try {
-            movie.setImage(imageSaveUtil.saveImage(movie.getName(), file, "movies"));
+            movie.setImage(imageSaveUtil.saveImage(movie.getName(),file,"movies"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -89,8 +84,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    @Transactional
-    public void updateMovie(Long id, MovieUpdateRequest movieUpdateRequest) {
+    public void updateMovie(Long id, MovieUpdateRequest movieUpdateRequest, MultipartFile file) {
         Movie movie = fetchMovieIfExist(id);
         ofNullable(movieUpdateRequest.getName()).ifPresent(movie::setName);
         ofNullable(movieUpdateRequest.getDescription()).ifPresent(movie::setDescription);
@@ -98,6 +92,15 @@ public class MovieServiceImpl implements MovieService {
         ofNullable(movieUpdateRequest.getDuration()).ifPresent(movie::setDuration);
         ofNullable(movieUpdateRequest.getAgeLimit()).ifPresent(movie::setAgeLimit);
         ofNullable(movieUpdateRequest.getStatus()).ifPresent(status -> movie.setStatus(MovieStatus.valueOf(movieUpdateRequest.getStatus()).getId()));
+
+        if (file != null && !file.isEmpty()) {
+            try {
+                String newImagePath = imageSaveUtil.saveImage(movie.getName(), file, "movies");
+                movie.setImage(newImagePath);
+            } catch (IOException e) {
+                throw new RuntimeException("Error while saving image", e);
+            }
+        }
         addRelations(movie, movieUpdateRequest.getSubtitleLanguages(), movieUpdateRequest.getLanguages());
         movieRepository.save(movie);
     }
@@ -126,7 +129,6 @@ public class MovieServiceImpl implements MovieService {
                 .language(languageService.fetchLanguageIfExist(request.getLanguageId()))
                 .isMain(request.getIsMain())
                 .build();
-        movieLanguageRepository.save(movieLanguage);
         return movieLanguage;
     }
 
@@ -135,12 +137,13 @@ public class MovieServiceImpl implements MovieService {
         return movieRepository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Movie with id [" + id + "] is not visible."));
     }
 
+
     public void addRelations(Movie movie, List<Long> subtitleLanguageIds, List<MovieLanguageRequest> movieLanguages) {
-        if (subtitleLanguageIds != null && !subtitleLanguageIds.isEmpty()) {
+        if (!subtitleLanguageIds.isEmpty()) {
             Set<Language> subtitleLanguages = subtitleLanguageIds.stream().map(languageService::fetchLanguageIfExist).collect(Collectors.toSet());
             movie.setSubtitleLanguages(subtitleLanguages);
         }
-        if (movieLanguages != null && !movieLanguages.isEmpty()) {
+        if (!movieLanguages.isEmpty()) {
             Set<MovieLanguage> languages = movieLanguages.stream().map(e -> addMovieLanguage(movie, e)).collect(Collectors.toSet());
             movie.setLanguages(languages);
         }
