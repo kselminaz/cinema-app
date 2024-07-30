@@ -1,7 +1,6 @@
 package group.aist.cinemaapp.mapper;
 
 import group.aist.cinemaapp.dto.request.CompanyInfoCreateRequest;
-import group.aist.cinemaapp.dto.request.CompanyInfoUpdateRequest;
 import group.aist.cinemaapp.dto.response.CompanyInfoResponse;
 import group.aist.cinemaapp.dto.response.PageableResponse;
 import group.aist.cinemaapp.model.CompanyInfo;
@@ -19,7 +18,7 @@ public interface CompanyInfoMapper {
     @Mapping(target = "id",ignore = true)
     @Mapping(target = "logo",ignore = true)
     CompanyInfo toEntity(CompanyInfoCreateRequest request);
-
+    @Mapping(target = "logo",source = "logo",qualifiedByName = "processLogo")
     CompanyInfoResponse toResponse(CompanyInfo entity);
 
     @Mapping(target = "data", source = "content", qualifiedByName = "getCompanyInfoList")
@@ -32,7 +31,7 @@ public interface CompanyInfoMapper {
     default List<CompanyInfoResponse> getCompanyInfoList(List<CompanyInfo> companyInfos) {
         return companyInfos.stream().map(this::toResponse).toList();
     }
-
+    @Named("processLogo")
     default String processLogo(String logo) {
         return Optional.ofNullable(logo)
                 .map(l -> Base64.getEncoder().encodeToString(l.getBytes()))

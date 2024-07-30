@@ -16,4 +16,6 @@ public class CompanyInfoUpdateRequest {
     String aboutText;
     @NotBlank(message = "Costumers information is required")
     String costumersInformationText;
+    
+
 }
