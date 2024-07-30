@@ -21,6 +21,12 @@ public class CompanyInfoController {
         return companyService.getCompanyById(id);
     }
 
+    @GetMapping("/main-data")
+    public CompanyInfoResponse getCompanyData()
+    {
+        return companyService.getCompanyData();
+    }
+
     @GetMapping
     public PageableResponse<CompanyInfoResponse> getCompanies(PageCriteria pageCriteria) {
         return companyService.getCompanies(pageCriteria);

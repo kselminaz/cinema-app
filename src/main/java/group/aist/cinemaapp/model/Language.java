@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
@@ -35,6 +36,10 @@ public class Language {
     LocalDateTime createdAt;
     @UpdateTimestamp
     LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "language", orphanRemoval = true)
+    @ToString.Exclude
+    Set<MovieLanguage> languages;
 
     @ManyToMany(mappedBy = "subtitleLanguages", fetch = LAZY, cascade = ALL)
     @ToString.Exclude

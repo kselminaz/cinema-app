@@ -16,6 +16,8 @@ import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public interface CompanyInfoMapper {
+    @Mapping(target = "id",ignore = true)
+    @Mapping(target = "logo",ignore = true)
     CompanyInfo toEntity(CompanyInfoCreateRequest request);
 
     CompanyInfoResponse toResponse(CompanyInfo entity);

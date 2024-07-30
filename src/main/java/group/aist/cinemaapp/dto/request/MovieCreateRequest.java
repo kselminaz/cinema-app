@@ -23,7 +23,7 @@ public class MovieCreateRequest {
 
     String name;
     String description;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     LocalDateTime releaseTime;
     Integer duration;
     Integer ageLimit;

@@ -105,7 +105,6 @@ public class AuthServiceImpl implements AuthService {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
 
         try {
-            log.info("request getdi");
             ResponseEntity<Map> response = restTemplate.postForEntity(tokenUrl, requestEntity, Map.class);
             log.info(response.getStatusCode().toString());
             if (response.getStatusCode().is2xxSuccessful()) {

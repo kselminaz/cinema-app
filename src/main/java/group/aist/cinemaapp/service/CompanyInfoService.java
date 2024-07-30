@@ -28,5 +28,7 @@ public interface CompanyInfoService {
 
     CompanyInfo fetchCompanyIfExist(Long id);
 
+    CompanyInfoResponse getCompanyData();
+
 
 }

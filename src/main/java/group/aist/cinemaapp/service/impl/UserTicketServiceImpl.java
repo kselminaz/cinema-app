@@ -116,11 +116,12 @@ public class UserTicketServiceImpl implements UserTicketService {
 
                     qrString = Base64.getEncoder().encodeToString(qrcode);
 
-                    var companyInfo = companyInfoService.getCompanyById(1L);
+                   // var companyInfo = companyInfoService.getCompanyById(1L);
+
+                    var companyInfo = companyInfoService.getCompanyData();
 
                     var pdfdto = userTicketMapper.toPDFResponse(userTicket, companyInfo, qrString);
 
-                    System.out.println(pdfdto);
 
                     try {
                         var pdf = pdfUtil.generatePdfFromHtml(pdfUtil.parseThymeleafTemplate(pdfdto));

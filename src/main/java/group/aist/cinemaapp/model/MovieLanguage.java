@@ -34,12 +34,10 @@ public class MovieLanguage {
 
     @ManyToOne(cascade = ALL)
     @JoinColumn(name = "movie_id")
-    @JsonIgnore
     Movie movie;
 
     @ManyToOne(cascade = ALL)
     @JoinColumn(name = "language_id")
-    @JsonIgnore
     Language language;
 
     Boolean isMain;
