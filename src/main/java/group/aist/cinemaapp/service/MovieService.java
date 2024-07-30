@@ -22,7 +22,6 @@ public interface MovieService {
     List<MovieResponse> searchMovies(String searchText);
 
     void saveMovie(MovieCreateRequest movieCreateRequest, MultipartFile file);
-
     void updateMovie(Long id, MovieUpdateRequest movieUpdateRequest);
 
     void updateMovieStatus(Long id, String status);

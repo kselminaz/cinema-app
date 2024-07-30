@@ -33,20 +33,17 @@ public class HallController {
     public void saveHall(@Valid @RequestBody HallCreateRequest request) {
         hallService.saveHall(request);
     }
-
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteHall(@PathVariable Long id) {
         hallService.deleteHall(id);
     }
-
     @PutMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateHall(@PathVariable Long id, @Valid @RequestBody HallUpdateRequest request) {
         hallService.updateHall(id, request);
     }
-
     @PatchMapping("/{id}")
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasRole('ROLE_ADMIN')")

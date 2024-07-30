@@ -9,16 +9,20 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.data.domain.Page;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public interface CompanyInfoMapper {
-    @Mapping(target = "id",ignore = true)
-    @Mapping(target = "logo",ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "logo", ignore = true)
     CompanyInfo toEntity(CompanyInfoCreateRequest request);
-    @Mapping(target = "logo",source = "logo",qualifiedByName = "processLogo")
+
+    @Mapping(target = "logo", source = "logo", qualifiedByName = "processLogo")
     CompanyInfoResponse toResponse(CompanyInfo entity);
 
     @Mapping(target = "data", source = "content", qualifiedByName = "getCompanyInfoList")
@@ -31,10 +35,18 @@ public interface CompanyInfoMapper {
     default List<CompanyInfoResponse> getCompanyInfoList(List<CompanyInfo> companyInfos) {
         return companyInfos.stream().map(this::toResponse).toList();
     }
+
     @Named("processLogo")
-    default String processLogo(String logo) {
-        return Optional.ofNullable(logo)
-                .map(l -> Base64.getEncoder().encodeToString(l.getBytes()))
-                .orElse(null);
+    default String processLogo(String logoPath) {
+        try {
+            if (logoPath != null) {
+                byte[] fileContent = Files.readAllBytes(Paths.get(logoPath));
+                return Base64.getEncoder().encodeToString(fileContent);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error while processing the logo image", e);
+        }
+        return null;
     }
+
 }

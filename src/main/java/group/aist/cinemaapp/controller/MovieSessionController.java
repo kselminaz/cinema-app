@@ -1,5 +1,4 @@
 package group.aist.cinemaapp.controller;
-
 import group.aist.cinemaapp.criteria.MovieSessionSearchCriteria;
 import group.aist.cinemaapp.criteria.MovieSessionSortingCriteria;
 import group.aist.cinemaapp.criteria.PageCriteria;
