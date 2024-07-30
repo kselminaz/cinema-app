@@ -50,8 +50,8 @@ public class MovieController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void updateMovie(@PathVariable Long id, @RequestBody MovieUpdateRequest movieUpdateRequest) {
-        movieService.updateMovie(id, movieUpdateRequest);
+    public void updateMovie(@PathVariable Long id, @RequestPart("data") MovieUpdateRequest movieUpdateRequest, @RequestPart("file") MultipartFile file) {
+        movieService.updateMovie(id, movieUpdateRequest, file);
     }
 
     @PatchMapping("/{id}")
