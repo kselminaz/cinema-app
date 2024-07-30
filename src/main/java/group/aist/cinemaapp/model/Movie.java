@@ -44,7 +44,6 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie", orphanRemoval = true)
     @ToString.Exclude
-    @JsonManagedReference
     Set<MovieLanguage> languages;
 
     @ManyToMany
