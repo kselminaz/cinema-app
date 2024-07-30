@@ -46,6 +46,7 @@ public class MovieServiceImpl implements MovieService {
     private final ImageSaveUtil imageSaveUtil;
 
     @Override
+    @Transactional
     public MovieResponse getMovieById(Long id) {
         Movie movie = fetchMovieIfExist(id);
         if (movie.getStatus() != MovieStatus.VISIBLE.getId()) {
@@ -55,6 +56,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    @Transactional
     public PageableResponse<MovieResponse> getMovies(PageCriteria pageCriteria) {
         var resultsPage = movieRepository.findAllByStatusIs(PageRequest.of(pageCriteria.getPage(), pageCriteria.getCount()), VISIBLE.getId());
         return movieMapper.toPageableResponse(resultsPage);
