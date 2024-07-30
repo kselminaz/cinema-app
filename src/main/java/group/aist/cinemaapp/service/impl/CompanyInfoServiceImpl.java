@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 
+import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -52,13 +53,20 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         }
         companyRepository.save(companyInfo);
     }
-
     @Override
-    public void updateCompany(Long id, CompanyInfoUpdateRequest request) {
+    public void updateCompany(Long id, CompanyInfoUpdateRequest request, MultipartFile logo) {
         var entity = fetchCompanyIfExist(id);
         ofNullable(request.getName()).ifPresent(entity::setName);
         ofNullable(request.getAboutText()).ifPresent(entity::setAboutText);
         ofNullable(request.getCostumersInformationText()).ifPresent(entity::setCostumersInformationText);
+        if (logo != null && !logo.isEmpty()) {
+            try {
+                String newLogoPath = imageSaveUtil.saveImage("logo", logo, "/uploads");
+                entity.setLogo(newLogoPath);
+            } catch (IOException e) {
+                throw new RuntimeException("Error while updating the logo image", e);
+            }
+        }
         companyRepository.save(entity);
     }
 

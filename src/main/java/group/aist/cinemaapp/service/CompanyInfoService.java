@@ -19,8 +19,7 @@ public interface CompanyInfoService {
     CompanyInfoResponse getCompanyById(Long id);
 
     void saveCompanyInfo(CompanyInfoCreateRequest request,MultipartFile logoFile) ;
-
-    void updateCompany(Long id, CompanyInfoUpdateRequest request);
+void updateCompany(Long id, CompanyInfoUpdateRequest request,MultipartFile file );
 
     void deleteCompany(Long id);
 

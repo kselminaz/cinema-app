@@ -37,12 +37,11 @@ public class CompanyInfoController {
     public void saveCompanyInfo(@RequestPart("data") CompanyInfoCreateRequest companyCreateRequest, @RequestPart("logo") MultipartFile logo) {
         companyService.saveCompanyInfo(companyCreateRequest,logo);
     }
-
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void updateCompany(@PathVariable Long id, @RequestBody CompanyInfoUpdateRequest request) {
-        companyService.updateCompany(id, request);
-    }
+@PutMapping("/{id}")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
+public void updateCompany(@PathVariable Long id,@RequestPart("data") CompanyInfoUpdateRequest request,@RequestPart("logo") MultipartFile logo) {
+    companyService.updateCompany(id, request,logo);
+}
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
