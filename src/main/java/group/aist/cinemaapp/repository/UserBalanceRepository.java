@@ -8,4 +8,6 @@ public interface UserBalanceRepository extends JpaRepository<UserBalance, Long> 
 
    UserBalance findByUserIdAndCurrency(String userId, CurrencyType currency);
 
+   UserBalance findByUserId(String id);
+
 }

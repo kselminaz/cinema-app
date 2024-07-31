@@ -1,15 +1,32 @@
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Ticket PDF</title>
+    <style>
+        .vertical-text {
+            transform: rotate(-90deg);
+            transform-origin: left bottom;
+            white-space: nowrap;
+            display: inline-block;
+        }
+    </style>
+</head>
 <body>
 <div id="theatre_info" >
-    <img th:src=" ${pdfDto.getCompanyImage()}" alt="company logo" width="100px" height="100px"/>
-</div>
-<div>
     <h3 th:text="'Theatre: ' + ${pdfDto.getCompanyName()} "></h3>
+    <p th:text="'Theatre Contacts: ' + ${pdfDto.getCompanyAboutText()} "></p>
+ <!--   <img th:src="@{'/' + ${pdfDto.getCompanyImage()}}" alt="company logo" width="100px" height="100px"/>-->
+</div>
+
+<div id="qr_and_ticket_number">
+    <img th:src="'data:image/jpeg;base64,' + ${pdfDto.getQrCode()}" alt="Qr code" width="100px" height="100px"/>
+</div>
+
+<div>
     <h4 th:text="'Movie: ' + ${pdfDto.getMovieName()} "></h4>
 </div>
-<div id="qr_and_ticket_number">
-    <img th:src="'data:image/jpeg;base64,' + ${pdfDto.getQrCode()}" alt="Qr code" width="300px" height="300px"/>
-    <a></a>
+
+<div class="vertical-text" th:text="'Ticket Number: ' + ${pdfDto.getTicketNumber()} ">
+
 </div>
 
 <div id="ticket_info">

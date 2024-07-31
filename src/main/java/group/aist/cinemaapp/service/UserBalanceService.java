@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.service;
 
+import group.aist.cinemaapp.dto.request.UserBalanceUpdateRequest;
 import group.aist.cinemaapp.enums.CurrencyType;
 import group.aist.cinemaapp.model.UserBalance;
 
@@ -14,4 +15,5 @@ public interface UserBalanceService {
     UserBalance saveUserBalance(String userId, CurrencyType currencyType, BigDecimal amount);
 
     void updateUserBalance(Long id, BigDecimal amount);
+    void changeUserBalance(UserBalanceUpdateRequest request);
 }
