@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.data.domain.Page;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +20,8 @@ public interface CompanyInfoMapper {
     @Mapping(target = "id",ignore = true)
     @Mapping(target = "logo",ignore = true)
     CompanyInfo toEntity(CompanyInfoCreateRequest request);
-    @Mapping(target = "logo",source = "logo",qualifiedByName = "processLogo")
+    @Mapping(target = "logo",source = "logo",qualifiedByName = "normalizePath")
     CompanyInfoResponse toResponse(CompanyInfo entity);
-
     @Mapping(target = "data", source = "content", qualifiedByName = "getCompanyInfoList")
     @Mapping(target = "hasNextPage", expression = "java(page.hasNext())")
     @Mapping(target = "lastPageNumber", source = "totalPages")
@@ -31,10 +32,8 @@ public interface CompanyInfoMapper {
     default List<CompanyInfoResponse> getCompanyInfoList(List<CompanyInfo> companyInfos) {
         return companyInfos.stream().map(this::toResponse).toList();
     }
-    @Named("processLogo")
-    default String processLogo(String logo) {
-        return Optional.ofNullable(logo)
-                .map(l -> Base64.getEncoder().encodeToString(l.getBytes()))
-                .orElse(null);
-    }
+    @Named("normalizePath")
+    default String normalizePath(String path) {
+        return path.replace("\\","/");}
+
 }

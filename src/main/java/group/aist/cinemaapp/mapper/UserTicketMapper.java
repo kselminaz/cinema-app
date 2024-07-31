@@ -35,6 +35,7 @@ public interface UserTicketMapper {
     @Mapping(target = " row", expression = "java(userTicket.getTicket().getSeat().getRow())")
     @Mapping(target = " seatNumber", expression = "java(userTicket.getTicket().getSeat().getSeatNumber())")
     @Mapping(target = " companyName", expression = "java(companyInfo.getName())")
+    @Mapping(target = " companyAboutText", expression = "java(companyInfo.getAboutText())")
     @Mapping(target = " companyImage", expression = "java(companyInfo.getLogo())")
     @Mapping(target = "customersInfo", expression = "java(companyInfo.getCostumersInformationText())")
     UserTicketPdfDto toPDFResponse(UserTicket userTicket, CompanyInfoResponse companyInfo, String qrcode);

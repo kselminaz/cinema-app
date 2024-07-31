@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class UserTicketPdfDto {
 
     String companyName;
-    String companyPhone;
+    String companyAboutText;
     String companyImage;
     String movieName;
     @JsonFormat(pattern = "yyyy-MM-dd")
