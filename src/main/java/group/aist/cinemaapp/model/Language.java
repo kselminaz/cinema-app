@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
@@ -35,8 +37,13 @@ public class Language {
     @UpdateTimestamp
     LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "language", orphanRemoval = true)
+    @ToString.Exclude
+    Set<MovieLanguage> languages;
+
     @ManyToMany(mappedBy = "subtitleLanguages", fetch = LAZY, cascade = ALL)
     @ToString.Exclude
+    @JsonBackReference
     List<Movie> movieWithSubtitleLanguages;
 
     @Override

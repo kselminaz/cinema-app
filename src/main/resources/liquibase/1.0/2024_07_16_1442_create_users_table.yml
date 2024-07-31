@@ -8,9 +8,14 @@ databaseChangeLog:
             columns:
                   - column:
                       name: id
-                      type: bigint
+                      type: varchar(255)
                       constraints:
                         primaryKey: true
+                        nullable: false
+                  - column:
+                      name: username
+                      type: varchar(255)
+                      constraints:
                         nullable: false
                   - column:
                       name: full_name
@@ -23,5 +28,8 @@ databaseChangeLog:
                   - column:
                       name: mail
                       type: varchar(255)
+                  - column:
+                      name: dob
+                      type: date
 
             remarks: Table to store users

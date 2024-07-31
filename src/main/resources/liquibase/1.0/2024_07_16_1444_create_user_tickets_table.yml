@@ -15,7 +15,7 @@ databaseChangeLog:
                         nullable: false
                   - column:
                       name: user_id
-                      type: bigint
+                      type: varchar(255)
                       constraints:
                         nullable: false
                         foreignKeyName: fk_user_tickets_user

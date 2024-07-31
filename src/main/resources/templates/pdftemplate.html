@@ -1,12 +1,43 @@
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Ticket PDF</title>
+    <style>
+        .vertical-text {
+            transform: rotate(-90deg);
+            transform-origin: left bottom;
+            white-space: nowrap;
+            display: inline-block;
+        }
+    </style>
+</head>
 <body>
-<h3 style="text-align: center; color: green">
-</h3>
+<div id="theatre_info" >
+    <h3 th:text="'Theatre: ' + ${pdfDto.getCompanyName()} "></h3>
+    <p th:text="'Theatre Contacts: ' + ${pdfDto.getCompanyAboutText()} "></p>
+ <!--   <img th:src="@{'/' + ${pdfDto.getCompanyImage()}}" alt="company logo" width="100px" height="100px"/>-->
+</div>
+
+<div id="qr_and_ticket_number">
+    <img th:src="'data:image/jpeg;base64,' + ${pdfDto.getQrCode()}" alt="Qr code" width="100px" height="100px"/>
+</div>
+
 <div>
-    <p th:text="'Movie: ' + ${pdfDto.getMovieName()} "></p>
-    <p th:text="'Movie Session Datetime: ' + ${pdfDto.getMovieDateTime()} "></p>
-    <p th:text="'Movie Hall: ' + ${pdfDto.getHall()} "></p>
-    <p th:text="'Ticket number: ' + ${pdfDto.getTicketNumber()} "></p>
+    <h4 th:text="'Movie: ' + ${pdfDto.getMovieName()} "></h4>
+</div>
+
+<div class="vertical-text" th:text="'Ticket Number: ' + ${pdfDto.getTicketNumber()} ">
+
+</div>
+
+<div id="ticket_info">
+   <p><span>Tarix/Date :</span> <label th:text=" ${pdfDto.getMovieDateTime()} "></label></p>
+    <p><span>Zal/Hall :</span> <label th:text=" ${pdfDto.getHall()} "></label></p>
+    <p><span>Sektor/Sector :</span> <label th:text=" ${pdfDto.getSectorName()} "></label></p>
+    <p><span>Oturacaq/Seat number :</span> <label th:text=" ${pdfDto.getSeatNumber()} "></label></p>
+
+</div>
+<div id="customers_info">
+    <p  th:text="'Additional Information for Customers: ' + ${pdfDto.getCustomersInfo()} "> </p>
 </div>
 </body>
 </html>

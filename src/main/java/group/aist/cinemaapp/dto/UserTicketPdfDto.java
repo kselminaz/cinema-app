@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,9 +15,10 @@ import java.time.LocalDateTime;
 public class UserTicketPdfDto {
 
     String companyName;
-    String companyPhone;
+    String companyAboutText;
     String companyImage;
     String movieName;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDateTime movieDateTime;
     BigDecimal price;
     String currency;
@@ -26,6 +28,7 @@ public class UserTicketPdfDto {
     String sectorName;
     String row;
     Long seatNumber;
+    String customersInfo;
 
 
 }

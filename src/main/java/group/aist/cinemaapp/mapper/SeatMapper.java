@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.mapper;
 
+import group.aist.cinemaapp.dto.request.ManySeatCreateRequest;
 import group.aist.cinemaapp.dto.request.SeatCreateRequest;
 import group.aist.cinemaapp.dto.response.MovieResponse;
 import group.aist.cinemaapp.dto.response.SeatResponse;
@@ -20,6 +21,10 @@ public interface SeatMapper {
 
     @Mapping(target = "sector", ignore = true)
     Seat toSeat(SeatCreateRequest seatCreateRequest);
+
+    @Mapping(target = "sector", ignore = true)
+    @Mapping(target = "seatNumber", ignore = true)
+    Seat toSeat(ManySeatCreateRequest manySeatCreateRequest);
 
     @Named("getById")
     default SeatStatus getById(Integer id) {

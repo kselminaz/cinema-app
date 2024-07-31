@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class MovieResponse {
     String name;
     String image;
     String description;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     LocalDateTime releaseTime;
     Integer duration;
     Integer ageLimit;

@@ -38,6 +38,9 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: currency
+                  type: varchar(10)
+              - column:
                   name: created_at
                   type: timestamp
                   defaultValue: now()

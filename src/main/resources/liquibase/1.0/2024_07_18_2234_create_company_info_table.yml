@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: Create_company_info_table
+      author: Elvin Hashimov
+      changes:
+        - createTable:
+            tableName: company_info
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: about_text
+                  type: text
+                  constraints:
+                    nullable: true
+              - column:
+                  name: logo
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: costumers_information_text
+                  type: text
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValue: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValue: now()
+                  constraints:
+                    nullable: false
+remarks: Table to store company info

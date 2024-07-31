@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: Insert_data_to_company_info_table
+      author: Selminaz Kerimli
+      changes:
+        - insert:
+            tableName: company_info
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: name
+                  value: Test Cinema
+              - column:
+                  name: about_text
+                  value: About text
+              - column:
+                  name: logo
+                  value: ""
+              - column:
+                  name: costumers_information_text
+                  value: Costumers information text
+
+
+

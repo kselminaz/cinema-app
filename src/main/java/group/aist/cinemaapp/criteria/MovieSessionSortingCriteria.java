@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MovieSessionSortingCriteria {
 
-    private SortDirection datetime;
+    private SortDirection sortDateTime;
 
 }

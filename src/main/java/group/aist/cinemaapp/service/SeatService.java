@@ -1,5 +1,6 @@
 package group.aist.cinemaapp.service;
 
+import group.aist.cinemaapp.dto.request.ManySeatCreateRequest;
 import group.aist.cinemaapp.dto.request.SeatCreateRequest;
 import group.aist.cinemaapp.dto.request.SeatUpdateRequest;
 import group.aist.cinemaapp.dto.response.SeatResponse;
@@ -15,6 +16,8 @@ public interface SeatService {
     List<SeatResponse> getSeats();
 
     void saveSeat(SeatCreateRequest seatCreateRequest);
+
+    void saveManySeat(ManySeatCreateRequest request);
 
     void updateSeat(Long id, SeatUpdateRequest seatUpdateRequest);
 

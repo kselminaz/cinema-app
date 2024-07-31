@@ -22,6 +22,12 @@ import static lombok.AccessLevel.PRIVATE;
 @Table(name = "sectors")
 @Builder
 @FieldDefaults(level = PRIVATE)
+@NamedEntityGraph(name = "sectorWithRelations",
+        attributeNodes = {
+                @NamedAttributeNode("hall"),
+                @NamedAttributeNode("seat")
+        }
+)
 public class Sector {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -45,8 +51,7 @@ public class Sector {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Sector sector = (Sector) o;
+        if (!(o instanceof Sector sector)) return false;
         return Objects.equals(getId(), sector.getId());
     }
 
@@ -55,5 +60,3 @@ public class Sector {
         return Objects.hash(getId());
     }
 }
-
-

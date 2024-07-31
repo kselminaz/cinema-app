@@ -1,3 +1,4 @@
+
 package group.aist.cinemaapp.dto.request;
 
 import group.aist.cinemaapp.enums.CurrencyType;
